@@ -6,17 +6,16 @@ import { AuthService } from '../../../services/auth';
 import { CacheService } from '../../../services/cache';
 import { UtilityService } from '../../../services/utility';
 
-import { AuthMailService } from './services/mail';
-
 import { User } from '../user/model';
 import { UserRepository } from '../user/repository';
 
 import { UserInvitation } from '../user-invitation/model';
 import { UserInvitationRepository } from '../user-invitation/repository';
+import { UserInvitationMailService } from '../user-invitation/services/mail';
 
 export class AuthController {
 	private readonly authService: AuthService = new AuthService();
-	private readonly authMailService: AuthMailService = new AuthMailService();
+	private readonly userInvMailService: UserInvitationMailService = new UserInvitationMailService();
 	private readonly cacheService: CacheService = new CacheService();
 
 	private readonly userRepo: UserRepository = new UserRepository();
@@ -158,7 +157,7 @@ export class AuthController {
 				hash
 			} as UserInvitation);
 
-			await this.authMailService.sendUserInvitation(req.body.email, hash);
+			await this.userInvMailService.sendUserInvitation(req.body.email, hash);
 
 			return res.status(204).send();
 		} catch (err) {

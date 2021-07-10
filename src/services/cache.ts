@@ -2,10 +2,6 @@ import nodeCache from 'node-cache';
 
 import { env } from '../config/globals';
 
-/**
- * TODO: Refactor
- */
-
 export class CacheService {
 	private static cache: nodeCache = new nodeCache({ stdTTL: env.CACHE_TTL });
 
@@ -19,7 +15,7 @@ export class CacheService {
 	 */
 	public get(
 		key: string,
-		storeFunction: Function = () => Promise.resolve(),
+		storeFunction: (...args: any[]) => Promise<any> = () => Promise.resolve(),
 		storeFunctionArgs: any[] = []
 	): Promise<any> {
 		const value = CacheService.cache.get(key);

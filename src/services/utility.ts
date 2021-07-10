@@ -66,11 +66,11 @@ export class UtilityService {
 	/**
 	 * Hash string with sha256 algorithm
 	 *
-	 * @param string String to hash
+	 * @param text String to hash
 	 * @returns Returns hashed string
 	 */
-	public static hashString(string: string): string {
-		return crypto.createHash('sha256').update(string).digest('hex');
+	public static hashString(text: string): string {
+		return crypto.createHash('sha256').update(text).digest('hex');
 	}
 
 	/**

@@ -34,4 +34,16 @@ export class User {
 
 	@ManyToOne((type) => UserRole, (userRole) => userRole.users)
 	public userRole: UserRole;
+
+	public static mockTestUser(): User {
+		const user = new User();
+
+		user.id = 1;
+		user.email = 'test@email.com';
+		user.firstname = 'testFirstname';
+		user.lastname = 'testLastName';
+		user.password = 'testPassword';
+
+		return user;
+	}
 }

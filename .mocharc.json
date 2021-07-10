@@ -1,0 +1,4 @@
+{
+	"spec": ["./dist/api/components/**/*.spec.js"],
+	"timeout": 5000
+}

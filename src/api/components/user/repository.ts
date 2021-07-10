@@ -8,7 +8,7 @@ import { CacheService } from '../../../services/cache';
 import { User } from './model';
 
 export class UserRepository implements IRepositoryServiceStrict<User> {
-	readonly defaultRelations: string[] = ['userRole', 'posts'];
+	readonly defaultRelations: string[] = ['userRole'];
 	readonly cacheService: CacheService = new CacheService();
 	readonly repo: Repository<User> = getManager().getRepository(User);
 

@@ -4,7 +4,7 @@ import { env, mails } from '../../../../config/globals';
 
 import { MailService } from '../../../../services/mail';
 
-export class AuthMailService extends MailService {
+export class UserInvitationMailService extends MailService {
 	/**
 	 * Send user invitation email
 	 *
