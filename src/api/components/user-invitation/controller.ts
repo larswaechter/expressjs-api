@@ -1,8 +1,8 @@
 import { bind } from 'decko';
 import { NextFunction, Request, Response } from 'express';
-import { validationResult } from 'express-validator';
 
 import { UserInvitation } from './model';
+
 import { UserInvitationRepository } from './repository';
 import { UserInvitationMailService } from './services/mail';
 
@@ -42,10 +42,6 @@ export class UserInvitationController {
 		try {
 			const { invitationID } = req.params;
 
-			if (!invitationID) {
-				return res.status(400).json({ status: 400, error: 'Invalid request' });
-			}
-
 			const invitation: UserInvitation | undefined = await this.repo.read({
 				where: {
 					id: +invitationID
@@ -69,12 +65,6 @@ export class UserInvitationController {
 	@bind
 	public async createUserInvitation(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
 		try {
-			const errors = validationResult(req);
-
-			if (!errors.isEmpty()) {
-				return res.status(400).json({ error: errors.array() });
-			}
-
 			const { email, hash, active } = req.body;
 
 			const invitation = new UserInvitation(email, hash, active);
@@ -100,10 +90,6 @@ export class UserInvitationController {
 	public async deleteUserInvitation(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
 		try {
 			const { invitationID } = req.params;
-
-			if (!invitationID) {
-				return res.status(400).json({ status: 400, error: 'Invalid request' });
-			}
 
 			const invitation: UserInvitation | undefined = await this.repo.read({
 				where: {

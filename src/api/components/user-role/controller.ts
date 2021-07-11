@@ -37,15 +37,9 @@ export class UserRoleController {
 	@bind
 	public async createUserRole(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
 		try {
-			const errors = validationResult(req);
-
-			if (!errors.isEmpty()) {
-				return res.status(400).json({ error: errors.array() });
-			}
-
 			const { name } = req.body;
 
-			const role = new UserRole(name);
+			const role = new UserRole(undefined, name);
 			const newRole: UserRole = await this.repo.save(role);
 
 			return res.json(newRole);

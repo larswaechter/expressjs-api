@@ -31,6 +31,7 @@ export class UserRoleRoutes implements IComponentRoutes<UserRoleController> {
 			this.authSerivce.isAuthorized(),
 			this.authSerivce.hasPermission(this.name, 'create'),
 			body('name').isString(),
+			this.authSerivce.validateRequest,
 			this.controller.createUserRole
 		);
 	}

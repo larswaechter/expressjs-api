@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { body, param } from 'express-validator';
 
 import { IComponentRoutes } from '../index';
 
@@ -18,10 +19,35 @@ export class AuthRoutes implements IComponentRoutes<AuthController> {
 	}
 
 	initRoutes(): void {
-		this.router.post('/signin', this.controller.signinUser);
-		this.router.get('/register/:hash', this.controller.validateRegistrationHash);
-		this.router.post('/register/:hash', this.controller.registerUser);
-		this.router.post('/invite', this.controller.createUserInvitation);
+		this.router.post(
+			'/signin',
+			body('email').isEmail(),
+			body('password').isString(),
+			this.authSerivce.validateRequest,
+			this.controller.signinUser
+		);
+		this.router.get(
+			'/register/:hash',
+			param('hash').isUUID(),
+			this.authSerivce.validateRequest,
+			this.controller.validateRegistrationHash
+		);
+		this.router.post(
+			'/register/:hash',
+			param('hash').isUUID(),
+			body('email').isEmail(),
+			body('firstname').isEmail(),
+			body('lastname').isEmail(),
+			body('password').isString(),
+			this.authSerivce.validateRequest,
+			this.controller.registerUser
+		);
+		this.router.post(
+			'/invite',
+			body('email').isEmail(),
+			this.authSerivce.validateRequest,
+			this.controller.createUserInvitation
+		);
 		this.router.post('/unregister', this.authSerivce.isAuthorized(), this.controller.unregisterUser);
 	}
 }

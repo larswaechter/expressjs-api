@@ -7,7 +7,7 @@
 	"database": "expressjs_api",
 	"synchronize": true,
 	"logging": false,
-	"entities": ["dist/**/model.js"],
-	"migrations": ["dist/**/migration.js"],
-	"subscribers": ["dist/**/subscriber.js"]
+	"entities": ["dist/api/components/**/model.js"],
+	"migrations": ["dist/api/components/**/migration.js"],
+	"subscribers": ["dist/api/components/**/subcriber.js"]
 }

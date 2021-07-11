@@ -1,6 +1,5 @@
 import { bind } from 'decko';
 import { NextFunction, Request, Response } from 'express';
-import { validationResult } from 'express-validator';
 
 import { UtilityService } from '../../../services/utility';
 
@@ -63,10 +62,6 @@ export class UserController {
 		try {
 			const { userID } = req.params;
 
-			if (!userID) {
-				return res.status(400).json({ error: 'Invalid request' });
-			}
-
 			const user: User | undefined = await this.userRepo.read({
 				where: {
 					id: +userID
@@ -90,12 +85,6 @@ export class UserController {
 	@bind
 	public async createUser(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
 		try {
-			const errors = validationResult(req);
-
-			if (!errors.isEmpty()) {
-				return res.status(400).json({ error: errors.array() });
-			}
-
 			const { email, firstname, lastname, password, active } = req.body;
 
 			const existingUser: User | undefined = await this.userRepo.read({
@@ -128,12 +117,6 @@ export class UserController {
 	@bind
 	public async updateUser(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
 		try {
-			const errors = validationResult(req);
-
-			if (!errors.isEmpty()) {
-				return res.status(400).json({ error: errors.array() });
-			}
-
 			const { userID } = req.params;
 			const { email, firstname, lastname, password, active } = req.body;
 
@@ -177,10 +160,6 @@ export class UserController {
 	public async deleteUser(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
 		try {
 			const { userID } = req.params;
-
-			if (!userID) {
-				return res.status(400).json({ error: 'Invalid request' });
-			}
 
 			const user: User | undefined = await this.userRepo.read({
 				where: {

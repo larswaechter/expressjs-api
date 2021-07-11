@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { body } from 'express-validator';
+import { body, param, query } from 'express-validator';
 
 import { IComponentRoutes } from '../index';
 
@@ -30,6 +30,8 @@ export class UserRoutes implements IComponentRoutes<UserController> {
 			'/search',
 			this.authSerivce.isAuthorized(),
 			this.authSerivce.hasPermission(this.name, 'read'),
+			query('username').isString(),
+			this.authSerivce.validateRequest,
 			this.controller.readUsersByUsername
 		);
 
@@ -37,6 +39,8 @@ export class UserRoutes implements IComponentRoutes<UserController> {
 			'/:userID',
 			this.authSerivce.isAuthorized(),
 			this.authSerivce.hasPermission(this.name, 'read'),
+			param('userID').isNumeric(),
+			this.authSerivce.validateRequest,
 			this.controller.readUser
 		);
 
@@ -49,6 +53,7 @@ export class UserRoutes implements IComponentRoutes<UserController> {
 			body('lastname').isString(),
 			body('password').isString(),
 			body('active').isBoolean(),
+			this.authSerivce.validateRequest,
 			this.controller.createUser
 		);
 
@@ -56,11 +61,13 @@ export class UserRoutes implements IComponentRoutes<UserController> {
 			'/:userID',
 			this.authSerivce.isAuthorized(),
 			this.authSerivce.hasPermission(this.name, 'update'),
+			param('userID').isNumeric(),
 			body('email').isEmail(),
 			body('firstname').isString(),
 			body('lastname').isString(),
 			body('password').isString(),
 			body('active').isBoolean(),
+			this.authSerivce.validateRequest,
 			this.controller.updateUser
 		);
 
@@ -68,6 +75,8 @@ export class UserRoutes implements IComponentRoutes<UserController> {
 			'/:userID',
 			this.authSerivce.isAuthorized(),
 			this.authSerivce.hasPermission(this.name, 'delete'),
+			param('userID').isNumeric(),
+			this.authSerivce.validateRequest,
 			this.controller.deleteUser
 		);
 	}

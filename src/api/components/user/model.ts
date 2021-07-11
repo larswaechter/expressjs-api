@@ -46,7 +46,7 @@ export class User {
 	public static mockTestUser(): User {
 		const user = new User('test@email.com', 'testFirstname', 'testLastname', 'testPassword', true);
 		user.id = 1;
-		user.userRole = new UserRole('Admin');
+		user.userRole = new UserRole(1, 'Admin');
 		return user;
 	}
 }

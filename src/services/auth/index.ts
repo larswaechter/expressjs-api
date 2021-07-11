@@ -3,6 +3,7 @@ import { Handler, NextFunction, Request, Response } from 'express';
 import { sign, SignOptions } from 'jsonwebtoken';
 import { use } from 'passport';
 import { ExtractJwt, StrategyOptions } from 'passport-jwt';
+import { validationResult } from 'express-validator';
 
 import { env } from '../../config/globals';
 import { policy } from '../../config/policy';
@@ -121,6 +122,17 @@ export class AuthService {
 				return next(err);
 			}
 		};
+	}
+
+	@bind
+	public validateRequest(req: Request, res: Response, next: NextFunction): Response | void {
+		const errors = validationResult(req);
+
+		if (!errors.isEmpty()) {
+			return res.status(400).json({ error: errors.array() });
+		}
+
+		return next();
 	}
 
 	/**

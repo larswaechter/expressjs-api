@@ -1,4 +1,4 @@
-import { assert } from 'chai';
+import { assert, expect } from 'chai';
 
 import { TestFactory } from '../../../test/factory';
 
@@ -7,7 +7,7 @@ import { User } from './model';
 describe('Testing user component', () => {
 	const factory: TestFactory = new TestFactory();
 	const testUser: User = User.mockTestUser();
-	const testUserModified: User = { ...testUser, firstname: 'testFirstnameModified', lastname: 'testLastnameModified' };
+	const testUserUpdated: User = { ...testUser, firstname: 'testFirstnameModified', lastname: 'testLastnameModified' };
 
 	before(async () => {
 		await factory.init();
@@ -48,11 +48,11 @@ describe('Testing user component', () => {
 
 						assert.isObject(user, 'user should be an object');
 
-						assert(user.id === testUser.id, 'id does not match');
-						assert(user.email === testUser.email, 'email does not match');
-						assert(user.firstname === testUser.firstname, 'firstname does not match');
-						assert(user.lastname === testUser.lastname, 'lastname does not match');
-						assert(user.active === testUser.active, 'active does not match');
+						expect(user.id).eq(testUser.id, 'id does not match');
+						expect(user.email).eq(testUser.email, 'email does not match');
+						expect(user.firstname).eq(testUser.firstname, 'firstname does not match');
+						expect(user.lastname).eq(testUser.lastname, 'lastname does not match');
+						expect(user.active).eq(testUser.active, 'active does not match');
 
 						return done();
 					} catch (err) {
@@ -67,11 +67,11 @@ describe('Testing user component', () => {
 			factory.app
 				.put('/api/v1/users/1')
 				.send({
-					email: testUserModified.email,
-					firstname: testUserModified.firstname,
-					lastname: testUserModified.lastname,
-					password: testUserModified.password,
-					active: testUserModified.active
+					email: testUserUpdated.email,
+					firstname: testUserUpdated.firstname,
+					lastname: testUserUpdated.lastname,
+					password: testUserUpdated.password,
+					active: testUserUpdated.active
 				})
 				.set('Accept', 'application/json')
 				.expect('Content-Type', /json/)
@@ -83,11 +83,11 @@ describe('Testing user component', () => {
 
 						assert.isObject(user, 'user should be an object');
 
-						assert(user.id === testUserModified.id, 'id does not match');
-						assert(user.email === testUserModified.email, 'email does not match');
-						assert(user.firstname === testUserModified.firstname, 'firstname does not match');
-						assert(user.lastname === testUserModified.lastname, 'lastname does not match');
-						assert(user.active === testUserModified.active, 'active does not match');
+						expect(user.id).eq(testUserUpdated.id, 'id does not match');
+						expect(user.email).eq(testUserUpdated.email, 'email does not match');
+						expect(user.firstname).eq(testUserUpdated.firstname, 'firstname does not match');
+						expect(user.lastname).eq(testUserUpdated.lastname, 'lastname does not match');
+						expect(user.active).eq(testUserUpdated.active, 'active does not match');
 
 						return done();
 					} catch (err) {
@@ -112,11 +112,11 @@ describe('Testing user component', () => {
 
 						assert.isArray(users, 'users should be an array');
 
-						assert(users[0].id === testUserModified.id, 'id does not match');
-						assert(users[0].email === testUserModified.email, 'email does not match');
-						assert(users[0].firstname === testUserModified.firstname, 'firstname does not match');
-						assert(users[0].lastname === testUserModified.lastname, 'lastname does not match');
-						assert(users[0].active === testUserModified.active, 'active does not match');
+						assert(users[0].id === testUserUpdated.id, 'id does not match');
+						assert(users[0].email === testUserUpdated.email, 'email does not match');
+						assert(users[0].firstname === testUserUpdated.firstname, 'firstname does not match');
+						assert(users[0].lastname === testUserUpdated.lastname, 'lastname does not match');
+						assert(users[0].active === testUserUpdated.active, 'active does not match');
 
 						return done();
 					} catch (err) {
@@ -141,11 +141,11 @@ describe('Testing user component', () => {
 
 						assert.isObject(user, 'user should be an object');
 
-						assert(user.id === testUserModified.id, 'id does not match');
-						assert(user.email === testUserModified.email, 'email does not match');
-						assert(user.firstname === testUserModified.firstname, 'firstname does not match');
-						assert(user.lastname === testUserModified.lastname, 'lastname does not match');
-						assert(user.active === testUserModified.active, 'active does not match');
+						expect(user.id).eq(testUserUpdated.id, 'id does not match');
+						expect(user.email).eq(testUserUpdated.email, 'email does not match');
+						expect(user.firstname).eq(testUserUpdated.firstname, 'firstname does not match');
+						expect(user.lastname).eq(testUserUpdated.lastname, 'lastname does not match');
+						expect(user.active).eq(testUserUpdated.active, 'active does not match');
 
 						return done();
 					} catch (err) {
@@ -171,11 +171,11 @@ describe('Testing user component', () => {
 
 						assert.isArray(users, 'users should be an array');
 
-						assert(users[0].id === testUserModified.id, 'id does not match');
-						assert(users[0].email === testUserModified.email, 'email does not match');
-						assert(users[0].firstname === testUserModified.firstname, 'firstname does not match');
-						assert(users[0].lastname === testUserModified.lastname, 'lastname does not match');
-						assert(users[0].active === testUserModified.active, 'active does not match');
+						expect(users[0].id).eq(testUserUpdated.id, 'id does not match');
+						expect(users[0].email).eq(testUserUpdated.email, 'email does not match');
+						expect(users[0].firstname).eq(testUserUpdated.firstname, 'firstname does not match');
+						expect(users[0].lastname).eq(testUserUpdated.lastname, 'lastname does not match');
+						expect(users[0].active).eq(testUserUpdated.active, 'active does not match');
 
 						return done();
 					} catch (err) {

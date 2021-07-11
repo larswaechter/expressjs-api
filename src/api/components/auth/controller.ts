@@ -1,12 +1,12 @@
 import { bind } from 'decko';
 import { NextFunction, Request, Response } from 'express';
-import validator from 'validator';
 
 import { AuthService } from '../../../services/auth';
 import { CacheService } from '../../../services/cache';
 import { UtilityService } from '../../../services/utility';
 
 import { User } from '../user/model';
+import { UserRole } from '../user-role/model';
 import { UserRepository } from '../user/repository';
 
 import { UserInvitation } from '../user-invitation/model';
@@ -30,14 +30,9 @@ export class AuthController {
 	@bind
 	public async signinUser(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
 		try {
-			const { email, password } = req.body.user;
-
-			if (!email || !password) {
-				return res.status(400).json({ status: 400, error: 'Invalid request' });
-			}
+			const { email, password } = req.body;
 
 			const user: User | undefined = await this.userRepo.read({
-				select: ['id', 'email', 'firstname', 'lastname', 'password'],
 				where: {
 					email,
 					active: true
@@ -55,7 +50,7 @@ export class AuthController {
 			// Don't send user password in response
 			delete user.password;
 
-			return res.json({ status: res.statusCode, data: { token, user } });
+			return res.json({ token, user });
 		} catch (err) {
 			return next(err);
 		}
@@ -73,16 +68,12 @@ export class AuthController {
 	public async registerUser(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
 		try {
 			const { hash } = req.params;
-			const { email, password } = req.body.user;
-
-			if (!email || !req.body.user) {
-				return res.status(400).json({ status: 400, error: 'Invalid request' });
-			}
+			const { email, firstname, lastname, password } = req.body;
 
 			const invitation: UserInvitation | undefined = await this.getUserInvitation(hash, email);
 
 			if (!invitation) {
-				return res.status(403).json({ status: 403, error: 'Invalid hash' });
+				return res.status(403).json({ error: 'Invalid hash' });
 			}
 
 			const user: User | undefined = await this.userRepo.read({
@@ -92,17 +83,11 @@ export class AuthController {
 			});
 
 			if (user) {
-				return res.status(400).json({ status: 400, error: 'Email is already taken' });
+				return res.status(400).json({ error: 'Email is already taken' });
 			}
 
-			await this.userRepo.save({
-				...req.body.user,
-				password: await UtilityService.hashPassword(password),
-				userRole: {
-					id: 1,
-					name: 'User'
-				}
-			});
+			const newUser = new User(email, firstname, lastname, await UtilityService.hashPassword(password), true);
+			newUser.userRole = new UserRole(1, 'Admin');
 
 			this.cacheService.delete('user');
 
@@ -127,10 +112,6 @@ export class AuthController {
 		try {
 			const { email } = req.body;
 
-			if (!email || !validator.isEmail(email)) {
-				return res.status(400).json({ status: 400, error: 'Invalid request' });
-			}
-
 			const user: User | undefined = await this.userRepo.read({
 				where: {
 					email
@@ -138,7 +119,7 @@ export class AuthController {
 			});
 
 			if (user) {
-				return res.status(400).json({ status: 400, error: 'Email is already taken' });
+				return res.status(400).json({ error: 'Email is already taken' });
 			}
 
 			// UUID for registration link
@@ -149,7 +130,7 @@ export class AuthController {
 				hash
 			} as UserInvitation);
 
-			await this.userInvMailService.sendUserInvitation(req.body.email, hash);
+			await this.userInvMailService.sendUserInvitation(email, hash);
 
 			return res.status(204).send();
 		} catch (err) {
@@ -170,10 +151,6 @@ export class AuthController {
 		try {
 			const { email } = req.user as User;
 
-			if (!email) {
-				return res.status(400).json({ status: 400, error: 'Invalid request' });
-			}
-
 			const user: User | undefined = await this.userRepo.read({
 				where: {
 					email
@@ -181,7 +158,7 @@ export class AuthController {
 			});
 
 			if (!user) {
-				return res.status(404).json({ status: 404, error: 'User not found' });
+				return res.status(404).json({ error: 'User not found' });
 			}
 
 			await this.userRepo.delete(user);
@@ -208,12 +185,8 @@ export class AuthController {
 		try {
 			const { hash } = req.params;
 
-			if (!hash) {
-				return res.status(400).json({ status: 400, error: 'Invalid request' });
-			}
-
 			const invitation = await this.getUserInvitation(hash);
-			return invitation ? res.status(204).send() : res.status(403).json({ status: 403, error: 'Invalid hash' });
+			return invitation ? res.status(204).send() : res.status(403).json({ error: 'Invalid hash' });
 		} catch (err) {
 			return next(err);
 		}

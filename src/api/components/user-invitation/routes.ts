@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { body } from 'express-validator';
+import { body, param } from 'express-validator';
 
 import { AuthService, PassportStrategy } from '../../../services/auth';
 
@@ -30,6 +30,8 @@ export class UserInvitationRoutes implements IComponentRoutes<UserInvitationCont
 			'/:invitationID',
 			this.authSerivce.isAuthorized(),
 			this.authSerivce.hasPermission(this.name, 'read'),
+			param('invitationID').isString(),
+			this.authSerivce.validateRequest,
 			this.controller.readUserInvitation
 		);
 
@@ -40,6 +42,7 @@ export class UserInvitationRoutes implements IComponentRoutes<UserInvitationCont
 			body('email').isEmail(),
 			body('hash').isUUID(),
 			body('active').isBoolean(),
+			this.authSerivce.validateRequest,
 			this.controller.createUserInvitation
 		);
 
@@ -47,6 +50,8 @@ export class UserInvitationRoutes implements IComponentRoutes<UserInvitationCont
 			'/:invitationID',
 			this.authSerivce.isAuthorized(),
 			this.authSerivce.hasPermission(this.name, 'delete'),
+			param('invitationID').isString(),
+			this.authSerivce.validateRequest,
 			this.controller.deleteUserInvitation
 		);
 	}

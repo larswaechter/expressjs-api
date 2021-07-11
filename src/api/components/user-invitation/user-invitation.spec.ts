@@ -1,4 +1,4 @@
-import { assert } from 'chai';
+import { assert, expect } from 'chai';
 
 import { TestFactory } from '../../../test/factory';
 
@@ -45,9 +45,10 @@ describe('Testing user-invitation component', () => {
 
 						assert.isObject(invitation, 'userInvitation should be an object');
 
-						assert(invitation.email === testInvitation.email, 'email does not match');
-						assert(invitation.hash === testInvitation.hash, 'hash does not match');
-						assert(invitation.active === testInvitation.active, 'active does not match');
+						expect(invitation.id).eq(testInvitation.id, 'id does not match');
+						expect(invitation.email).eq(testInvitation.email, 'email does not match');
+						expect(invitation.hash).eq(testInvitation.hash, 'hash does not match');
+						expect(invitation.active).eq(testInvitation.active, 'active does not match');
 
 						return done();
 					} catch (err) {
@@ -71,9 +72,11 @@ describe('Testing user-invitation component', () => {
 						const invitations: UserInvitation[] = res.body;
 
 						assert.isArray(invitations, 'invitations shoud be an array');
-						assert(invitations[0].email === testInvitation.email, 'email does not match');
-						assert(invitations[0].hash === testInvitation.hash, 'hash does not match');
-						assert(invitations[0].active === testInvitation.active, 'active does not match');
+
+						expect(invitations[0].id).eq(testInvitation.id, 'id does not match');
+						expect(invitations[0].email).eq(testInvitation.email, 'email does not match');
+						expect(invitations[0].hash).eq(testInvitation.hash, 'hash does not match');
+						expect(invitations[0].active).eq(testInvitation.active, 'active does not match');
 
 						return done();
 					} catch (err) {
@@ -97,9 +100,11 @@ describe('Testing user-invitation component', () => {
 						const invitation: UserInvitation = res.body;
 
 						assert.isObject(invitation, 'invitations shoud be an object');
-						assert(invitation.email === testInvitation.email, 'email does not match');
-						assert(invitation.hash === testInvitation.hash, 'hash does not match');
-						assert(invitation.active === testInvitation.active, 'active does not match');
+
+						expect(invitation.id).eq(testInvitation.id, 'id does not match');
+						expect(invitation.email).eq(testInvitation.email, 'email does not match');
+						expect(invitation.hash).eq(testInvitation.hash, 'hash does not match');
+						expect(invitation.active).eq(testInvitation.active, 'active does not match');
 
 						return done();
 					} catch (err) {

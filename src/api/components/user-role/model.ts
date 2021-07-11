@@ -4,7 +4,8 @@ import { User } from '../user/model';
 
 @Entity()
 export class UserRole {
-	constructor(name: string) {
+	constructor(id: number, name: string) {
+		this.id = id;
 		this.name = name;
 	}
 
@@ -21,9 +22,6 @@ export class UserRole {
 	public users: User[];
 
 	public static mockTestUserRole(): UserRole {
-		const userRole: UserRole = new UserRole('Admin');
-		userRole.id = 1;
-
-		return userRole;
+		return new UserRole(1, 'Admin');
 	}
 }

@@ -1,4 +1,4 @@
-import { assert } from 'chai';
+import { assert, expect } from 'chai';
 
 import { TestFactory } from '../../../test/factory';
 
@@ -43,8 +43,8 @@ describe('Testing user-role component', () => {
 
 						assert.isObject(role, 'userRole should be an object');
 
-						assert(role.id === testRole.id, 'id does not match');
-						assert(role.name === testRole.name, 'name does not match');
+						expect(role.id).eq(testRole.id, 'id does not match');
+						expect(role.name).eq(testRole.name, 'name does not match');
 
 						return done();
 					} catch (err) {
@@ -69,8 +69,8 @@ describe('Testing user-role component', () => {
 
 						assert.isArray(roles, 'userRoles shoud be an array');
 
-						assert(roles[0].id === testRole.id, 'id does not match');
-						assert(roles[0].name === testRole.name, 'name does not match');
+						expect(roles[0].id).eq(testRole.id, 'id does not match');
+						expect(roles[0].name).eq(testRole.name, 'name does not match');
 
 						return done();
 					} catch (err) {
