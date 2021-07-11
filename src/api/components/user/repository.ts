@@ -1,9 +1,9 @@
 import { bind } from 'decko';
 import { Like, Repository, FindConditions, getManager, FindManyOptions, FindOneOptions } from 'typeorm';
 
-import { IRepositoryServiceStrict } from '../index';
-
 import { CacheService } from '../../../services/cache';
+
+import { IRepositoryServiceStrict } from '../index';
 
 import { User } from './model';
 

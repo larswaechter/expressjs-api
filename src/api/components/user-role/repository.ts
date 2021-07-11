@@ -1,11 +1,10 @@
 import { bind } from 'decko';
 import { Repository, FindConditions, getManager } from 'typeorm';
 
-import { IRepositoryService } from '../index';
-
 import { CacheService } from '../../../services/cache';
 
 import { UserRole } from './model';
+import { IRepositoryService } from '../index';
 
 export class UserRoleRepository implements IRepositoryService<UserRole> {
 	readonly cacheService: CacheService = new CacheService();
@@ -20,7 +19,7 @@ export class UserRoleRepository implements IRepositoryService<UserRole> {
 	 * @returns Returns an array of user roles
 	 */
 	@bind
-	public readUserRoles(where: FindConditions<UserRole> = {}, cached: boolean = false): Promise<UserRole[]> {
+	public readAll(where: FindConditions<UserRole> = {}, cached: boolean = false): Promise<UserRole[]> {
 		try {
 			if (Object.keys(where).length) {
 				return this.repo.find({
@@ -29,7 +28,7 @@ export class UserRoleRepository implements IRepositoryService<UserRole> {
 			}
 
 			if (cached) {
-				return this.cacheService.get('user-role', this.readUserRoles);
+				return this.cacheService.get('user-role', this.readAll);
 			}
 
 			return this.repo.find();
@@ -45,7 +44,7 @@ export class UserRoleRepository implements IRepositoryService<UserRole> {
 	 * @returns Returns saved user-role
 	 */
 	@bind
-	public async saveUserRole(userRole: UserRole): Promise<UserRole> {
+	public async save(userRole: UserRole): Promise<UserRole> {
 		try {
 			const newUserRole: UserRole = await this.repo.save(userRole);
 

@@ -31,7 +31,11 @@ describe('Testing user component', () => {
 			factory.app
 				.post('/api/v1/users')
 				.send({
-					user: testUser
+					email: testUser.email,
+					firstname: testUser.firstname,
+					lastname: testUser.lastname,
+					password: testUser.password,
+					active: testUser.active
 				})
 				.set('Accept', 'application/json')
 				.expect('Content-Type', /json/)
@@ -40,19 +44,15 @@ describe('Testing user component', () => {
 					try {
 						if (err) throw err;
 
-						const { status } = res.body;
-						const user: User = res.body.data;
+						const user: User = res.body;
 
-						// Assert status
-						assert(status === res.status, 'status does not match');
-
-						// Assert user
 						assert.isObject(user, 'user should be an object');
-						for (const k in testUser) {
-							if (k !== 'password') {
-								assert(testUser[k as keyof User] === user[k as keyof User], `key ${k} does not match`);
-							}
-						}
+
+						assert(user.id === testUser.id, 'id does not match');
+						assert(user.email === testUser.email, 'email does not match');
+						assert(user.firstname === testUser.firstname, 'firstname does not match');
+						assert(user.lastname === testUser.lastname, 'lastname does not match');
+						assert(user.active === testUser.active, 'active does not match');
 
 						return done();
 					} catch (err) {
@@ -67,7 +67,11 @@ describe('Testing user component', () => {
 			factory.app
 				.put('/api/v1/users/1')
 				.send({
-					user: testUserModified
+					email: testUserModified.email,
+					firstname: testUserModified.firstname,
+					lastname: testUserModified.lastname,
+					password: testUserModified.password,
+					active: testUserModified.active
 				})
 				.set('Accept', 'application/json')
 				.expect('Content-Type', /json/)
@@ -75,19 +79,16 @@ describe('Testing user component', () => {
 					try {
 						if (err) throw err;
 
-						const { status } = res.body;
-						const user: User = res.body.data;
+						const user: User = res.body;
 
-						// Assert status
-						assert(status === res.status, 'status does not match');
-
-						// Assert user
 						assert.isObject(user, 'user should be an object');
-						for (const k in testUserModified) {
-							if (k !== 'password') {
-								assert(testUserModified[k as keyof User] === user[k as keyof User], `key ${k} does not match`);
-							}
-						}
+
+						assert(user.id === testUserModified.id, 'id does not match');
+						assert(user.email === testUserModified.email, 'email does not match');
+						assert(user.firstname === testUserModified.firstname, 'firstname does not match');
+						assert(user.lastname === testUserModified.lastname, 'lastname does not match');
+						assert(user.active === testUserModified.active, 'active does not match');
+
 						return done();
 					} catch (err) {
 						return done(err);
@@ -107,19 +108,15 @@ describe('Testing user component', () => {
 					try {
 						if (err) throw err;
 
-						const { status } = res.body;
-						const users: User[] = res.body.data;
+						const users: User[] = res.body;
 
-						// Assert status
-						assert(status === res.status, 'status does not match');
-
-						// Assert users
 						assert.isArray(users, 'users should be an array');
-						for (const k in testUserModified) {
-							if (k !== 'password') {
-								assert(testUserModified[k as keyof User] === users[0][k as keyof User], `key ${k} does not match`);
-							}
-						}
+
+						assert(users[0].id === testUserModified.id, 'id does not match');
+						assert(users[0].email === testUserModified.email, 'email does not match');
+						assert(users[0].firstname === testUserModified.firstname, 'firstname does not match');
+						assert(users[0].lastname === testUserModified.lastname, 'lastname does not match');
+						assert(users[0].active === testUserModified.active, 'active does not match');
 
 						return done();
 					} catch (err) {
@@ -140,19 +137,15 @@ describe('Testing user component', () => {
 					try {
 						if (err) throw err;
 
-						const { status } = res.body;
-						const user: User = res.body.data;
+						const user: User = res.body;
 
-						// Assert status
-						assert(status === res.status, 'status does not match');
-
-						// Assert user
 						assert.isObject(user, 'user should be an object');
-						for (const k in testUserModified) {
-							if (k !== 'password') {
-								assert(testUserModified[k as keyof User] === user[k as keyof User], `key ${k} does not match`);
-							}
-						}
+
+						assert(user.id === testUserModified.id, 'id does not match');
+						assert(user.email === testUserModified.email, 'email does not match');
+						assert(user.firstname === testUserModified.firstname, 'firstname does not match');
+						assert(user.lastname === testUserModified.lastname, 'lastname does not match');
+						assert(user.active === testUserModified.active, 'active does not match');
 
 						return done();
 					} catch (err) {
@@ -174,19 +167,15 @@ describe('Testing user component', () => {
 					try {
 						if (err) throw err;
 
-						const { status } = res.body;
-						const users: User[] = res.body.data;
+						const users: User[] = res.body;
 
-						// Assert status
-						assert(status === res.status, 'status does not match');
-
-						// Assert users
 						assert.isArray(users, 'users should be an array');
-						for (const k in testUserModified) {
-							if (k !== 'password') {
-								assert(testUserModified[k as keyof User] === users[0][k as keyof User], `key ${k} does not match`);
-							}
-						}
+
+						assert(users[0].id === testUserModified.id, 'id does not match');
+						assert(users[0].email === testUserModified.email, 'email does not match');
+						assert(users[0].firstname === testUserModified.firstname, 'firstname does not match');
+						assert(users[0].lastname === testUserModified.lastname, 'lastname does not match');
+						assert(users[0].active === testUserModified.active, 'active does not match');
 
 						return done();
 					} catch (err) {

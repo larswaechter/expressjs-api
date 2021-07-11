@@ -1,11 +1,11 @@
 import { bind } from 'decko';
-import { Repository, FindConditions, getManager } from 'typeorm';
+import { Repository, FindConditions, getManager, FindManyOptions, FindOneOptions } from 'typeorm';
 
-import { IRepositoryService } from '../index';
+import { IRepositoryServiceStrict } from '../index';
 
 import { UserInvitation } from './model';
 
-export class UserInvitationRepository implements IRepositoryService<UserInvitation> {
+export class UserInvitationRepository implements IRepositoryServiceStrict<UserInvitation> {
 	readonly repo: Repository<UserInvitation> = getManager().getRepository(UserInvitation);
 
 	/**
@@ -15,7 +15,7 @@ export class UserInvitationRepository implements IRepositoryService<UserInvitati
 	 * @returns Returns an array of user invitations
 	 */
 	@bind
-	public readUserInvitations(where: FindConditions<UserInvitation> = {}): Promise<UserInvitation[]> {
+	public readAll(where: FindManyOptions<UserInvitation> = {}): Promise<UserInvitation[]> {
 		try {
 			return this.repo.find({ where });
 		} catch (err) {
@@ -30,11 +30,9 @@ export class UserInvitationRepository implements IRepositoryService<UserInvitati
 	 * @returns Returns a single user invitation
 	 */
 	@bind
-	public readUserInvitation(where: FindConditions<UserInvitation>): Promise<UserInvitation | undefined> {
+	public read(options: FindOneOptions<UserInvitation>): Promise<UserInvitation | undefined> {
 		try {
-			return this.repo.findOne({
-				where
-			});
+			return this.repo.findOne(options);
 		} catch (err) {
 			throw new Error(err);
 		}
@@ -47,7 +45,7 @@ export class UserInvitationRepository implements IRepositoryService<UserInvitati
 	 * @returns Returns saved user invitation
 	 */
 	@bind
-	public saveUserInvitation(userInvitation: UserInvitation): Promise<UserInvitation> {
+	public save(userInvitation: UserInvitation): Promise<UserInvitation> {
 		try {
 			return this.repo.save(userInvitation);
 		} catch (err) {
@@ -62,7 +60,7 @@ export class UserInvitationRepository implements IRepositoryService<UserInvitati
 	 * @returns Returns deleted user invitation
 	 */
 	@bind
-	public async deleteUserInvitation(userInvitation: UserInvitation): Promise<UserInvitation> {
+	public async delete(userInvitation: UserInvitation): Promise<UserInvitation> {
 		try {
 			return this.repo.remove(userInvitation);
 		} catch (err) {

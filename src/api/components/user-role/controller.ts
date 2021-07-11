@@ -1,5 +1,6 @@
 import { bind } from 'decko';
 import { NextFunction, Request, Response } from 'express';
+import { validationResult } from 'express-validator';
 
 import { UserRole } from './model';
 import { UserRoleRepository } from './repository';
@@ -18,9 +19,8 @@ export class UserRoleController {
 	@bind
 	public async readUserRoles(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
 		try {
-			const userRoles: UserRole[] = await this.repo.readUserRoles({}, true);
-
-			return res.json({ status: res.statusCode, data: userRoles });
+			const userRoles: UserRole[] = await this.repo.readAll({}, true);
+			return res.json(userRoles);
 		} catch (err) {
 			return next(err);
 		}
@@ -37,15 +37,18 @@ export class UserRoleController {
 	@bind
 	public async createUserRole(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
 		try {
-			const { userRole } = req.body;
+			const errors = validationResult(req);
 
-			if (!userRole) {
-				return res.status(400).json({ status: 400, error: 'Invalid request' });
+			if (!errors.isEmpty()) {
+				return res.status(400).json({ error: errors.array() });
 			}
 
-			const newUserRole: UserRole = await this.repo.saveUserRole(userRole);
+			const { name } = req.body;
 
-			return res.json({ status: res.statusCode, data: newUserRole });
+			const role = new UserRole(name);
+			const newRole: UserRole = await this.repo.save(role);
+
+			return res.json(newRole);
 		} catch (err) {
 			return next(err);
 		}

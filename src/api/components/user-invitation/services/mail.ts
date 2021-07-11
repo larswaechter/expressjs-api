@@ -18,18 +18,17 @@ export class UserInvitationMailService extends MailService {
 		};
 
 		const mailTemplate = await this.renderMailTemplate(
-			'./dist/api/components/global/user-invitation/templates/user-invitation.html',
+			'./dist/api/components/user-invitation/templates/invitation.html',
 			templateParams
 		);
 
 		const mail: SendMailOptions = {
 			from: mails.support,
 			html: mailTemplate,
-			subject: 'You were invited to join Aionic',
+			subject: 'You were invited to join expressjs-api',
 			to: email
 		};
 
-		// Send final mail
 		return this.sendMail(mail);
 	}
 }

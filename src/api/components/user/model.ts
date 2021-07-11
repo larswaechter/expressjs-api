@@ -4,6 +4,14 @@ import { UserRole } from '../user-role/model';
 
 @Entity()
 export class User {
+	constructor(email: string, firstname: string, lastname: string, password: string, active: boolean) {
+		this.email = email;
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.password = password;
+		this.active = active;
+	}
+
 	@PrimaryGeneratedColumn()
 	public id: number;
 
@@ -36,14 +44,9 @@ export class User {
 	public userRole: UserRole;
 
 	public static mockTestUser(): User {
-		const user = new User();
-
+		const user = new User('test@email.com', 'testFirstname', 'testLastname', 'testPassword', true);
 		user.id = 1;
-		user.email = 'test@email.com';
-		user.firstname = 'testFirstname';
-		user.lastname = 'testLastName';
-		user.password = 'testPassword';
-
+		user.userRole = new UserRole('Admin');
 		return user;
 	}
 }

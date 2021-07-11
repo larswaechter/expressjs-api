@@ -81,7 +81,6 @@ export class AuthController {
 
 			const invitation: UserInvitation | undefined = await this.getUserInvitation(hash, email);
 
-			// Invalid registration hash
 			if (!invitation) {
 				return res.status(403).json({ status: 403, error: 'Invalid hash' });
 			}
@@ -92,12 +91,11 @@ export class AuthController {
 				}
 			});
 
-			// Email is already taken
 			if (user) {
 				return res.status(400).json({ status: 400, error: 'Email is already taken' });
 			}
 
-			const newUser: User = await this.userRepo.save({
+			await this.userRepo.save({
 				...req.body.user,
 				password: await UtilityService.hashPassword(password),
 				userRole: {
@@ -106,14 +104,9 @@ export class AuthController {
 				}
 			});
 
-			// Clear user cache
 			this.cacheService.delete('user');
 
-			// Don't send user password in response
-			delete newUser.password;
-
-			// Remove user invitation
-			await this.userInvRepo.deleteUserInvitation(invitation);
+			await this.userInvRepo.delete(invitation);
 
 			return res.status(204).send();
 		} catch (err) {
@@ -144,7 +137,6 @@ export class AuthController {
 				}
 			});
 
-			// User is already registered
 			if (user) {
 				return res.status(400).json({ status: 400, error: 'Email is already taken' });
 			}
@@ -152,7 +144,7 @@ export class AuthController {
 			// UUID for registration link
 			const hash = UtilityService.generateUuid();
 
-			await this.userInvRepo.saveUserInvitation({
+			await this.userInvRepo.save({
 				email,
 				hash
 			} as UserInvitation);
@@ -188,7 +180,6 @@ export class AuthController {
 				}
 			});
 
-			// User not found
 			if (!user) {
 				return res.status(404).json({ status: 404, error: 'User not found' });
 			}
@@ -229,6 +220,8 @@ export class AuthController {
 	}
 
 	/**
+	 * Get user invitation
+	 *
 	 * @param hash
 	 * @param email
 	 * @returns Returns user invitation
@@ -236,7 +229,8 @@ export class AuthController {
 	@bind
 	private async getUserInvitation(hash: string, email?: string): Promise<UserInvitation | undefined> {
 		try {
-			return this.userInvRepo.readUserInvitation(email === undefined ? { hash } : { hash, email });
+			const options = { where: email === undefined ? { hash } : { hash, email } };
+			return this.userInvRepo.read(options);
 		} catch (err) {
 			throw err;
 		}

@@ -7,6 +7,7 @@ import { AuthService, PassportStrategy } from '../../../services/auth';
 import { AuthController } from './controller';
 
 export class AuthRoutes implements IComponentRoutes<AuthController> {
+	readonly name: string = 'auth';
 	readonly controller: AuthController = new AuthController();
 	readonly router: Router = Router();
 	authSerivce: AuthService;

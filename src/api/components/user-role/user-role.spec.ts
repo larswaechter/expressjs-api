@@ -6,7 +6,7 @@ import { UserRole } from './model';
 
 describe('Testing user-role component', () => {
 	const factory: TestFactory = new TestFactory();
-	const testUserRole: UserRole = UserRole.mockTestUserRole();
+	const testRole: UserRole = UserRole.mockTestUserRole();
 
 	before(async () => {
 		await factory.init();
@@ -30,7 +30,7 @@ describe('Testing user-role component', () => {
 			factory.app
 				.post('/api/v1/user-roles')
 				.send({
-					userRole: { name: 'Admin' }
+					name: 'Admin'
 				})
 				.set('Accept', 'application/json')
 				.expect('Content-Type', /json/)
@@ -39,16 +39,12 @@ describe('Testing user-role component', () => {
 					try {
 						if (err) throw err;
 
-						const { status } = res.body;
-						const userRole: UserRole = res.body.data;
+						const role: UserRole = res.body;
 
-						// Assert status
-						assert(status === res.status, 'status does not match');
+						assert.isObject(role, 'userRole should be an object');
 
-						// Assert userRole
-						assert.isObject(userRole, 'userRole should be an object');
-						assert(userRole.id === testUserRole.id, 'userRoleID does not match');
-						assert(userRole.name === testUserRole.name, 'userRoleName does not match');
+						assert(role.id === testRole.id, 'id does not match');
+						assert(role.name === testRole.name, 'name does not match');
 
 						return done();
 					} catch (err) {
@@ -69,16 +65,12 @@ describe('Testing user-role component', () => {
 					try {
 						if (err) throw err;
 
-						const { status } = res.body;
-						const userRoles: UserRole[] = res.body.data;
+						const roles: UserRole[] = res.body;
 
-						// Assert status
-						assert(status === res.status, 'status does not match');
+						assert.isArray(roles, 'userRoles shoud be an array');
 
-						// Assert userRoles
-						assert.isArray(userRoles, 'userRoles shoud be an array');
-						assert(userRoles[0].id === testUserRole.id, 'userRoleID does not match');
-						assert(userRoles[0].name === testUserRole.name, 'userRoleName does not match');
+						assert(roles[0].id === testRole.id, 'id does not match');
+						assert(roles[0].name === testRole.name, 'name does not match');
 
 						return done();
 					} catch (err) {

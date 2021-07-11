@@ -1,5 +1,6 @@
 import { bind } from 'decko';
 import { NextFunction, Request, Response } from 'express';
+import { validationResult } from 'express-validator';
 
 import { UtilityService } from '../../../services/utility';
 
@@ -22,7 +23,7 @@ export class UserController {
 		try {
 			const users: User[] = await this.userRepo.readAll({}, true);
 
-			return res.json({ status: res.statusCode, data: users });
+			return res.json(users);
 		} catch (err) {
 			return next(err);
 		}
@@ -43,7 +44,7 @@ export class UserController {
 
 			const users: User[] = await this.userRepo.readUsersByUsername(username as string);
 
-			return res.json({ status: res.statusCode, data: users });
+			return res.json(users);
 		} catch (err) {
 			return next(err);
 		}
@@ -63,16 +64,16 @@ export class UserController {
 			const { userID } = req.params;
 
 			if (!userID) {
-				return res.status(400).json({ status: 400, error: 'Invalid request' });
+				return res.status(400).json({ error: 'Invalid request' });
 			}
 
 			const user: User | undefined = await this.userRepo.read({
 				where: {
-					id: parseInt(userID, 10)
+					id: +userID
 				}
 			});
 
-			return res.json({ status: res.statusCode, data: user });
+			return res.json(user);
 		} catch (err) {
 			return next(err);
 		}
@@ -89,29 +90,28 @@ export class UserController {
 	@bind
 	public async createUser(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
 		try {
-			const { user } = req.body;
+			const errors = validationResult(req);
 
-			if (!user) {
-				return res.status(400).json({ status: 400, error: 'Invalid request' });
+			if (!errors.isEmpty()) {
+				return res.status(400).json({ error: errors.array() });
 			}
+
+			const { email, firstname, lastname, password, active } = req.body;
 
 			const existingUser: User | undefined = await this.userRepo.read({
 				where: {
-					email: user.email
+					email
 				}
 			});
 
-			// Email is already taken
 			if (existingUser) {
-				return res.status(400).json({ status: 400, error: 'Email is already taken' });
+				return res.status(400).json({ error: 'Email is already taken' });
 			}
 
-			const newUser: User = await this.userRepo.save({
-				...user,
-				password: await UtilityService.hashPassword(user.password)
-			});
+			const user: User = new User(email, firstname, lastname, await UtilityService.hashPassword(password), active);
+			const newUser: User = await this.userRepo.save(user);
 
-			return res.json({ status: res.statusCode, data: newUser });
+			return res.json(newUser);
 		} catch (err) {
 			return next(err);
 		}
@@ -128,33 +128,38 @@ export class UserController {
 	@bind
 	public async updateUser(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
 		try {
-			const { userID } = req.params;
-			let { user } = req.body;
+			const errors = validationResult(req);
 
-			if (!userID || !req.body.user) {
-				return res.status(400).json({ status: 400, error: 'Invalid request' });
+			if (!errors.isEmpty()) {
+				return res.status(400).json({ error: errors.array() });
+			}
+
+			const { userID } = req.params;
+			const { email, firstname, lastname, password, active } = req.body;
+
+			if (!userID) {
+				return res.status(400).json({ error: 'Invalid request' });
 			}
 
 			const existingUser: User | undefined = await this.userRepo.read({
 				where: {
-					id: parseInt(userID, 10)
+					id: +userID
 				}
 			});
 
 			if (!existingUser) {
-				return res.status(404).json({ status: 404, error: 'User not found' });
+				return res.status(404).json({ error: 'User not found' });
 			}
 
-			if (user.password) {
-				user = {
-					...user,
-					password: await UtilityService.hashPassword(user.password)
-				};
-			}
+			existingUser.email = email;
+			existingUser.firstname = firstname;
+			existingUser.lastname = lastname;
+			existingUser.password = await UtilityService.hashPassword(password);
+			existingUser.active = active;
 
-			const updatedUser: User = await this.userRepo.save(user);
+			const updatedUser: User = await this.userRepo.save(existingUser);
 
-			return res.json({ status: res.statusCode, data: updatedUser });
+			return res.json(updatedUser);
 		} catch (err) {
 			return next(err);
 		}
@@ -174,17 +179,17 @@ export class UserController {
 			const { userID } = req.params;
 
 			if (!userID) {
-				return res.status(400).json({ status: 400, error: 'Invalid request' });
+				return res.status(400).json({ error: 'Invalid request' });
 			}
 
 			const user: User | undefined = await this.userRepo.read({
 				where: {
-					id: parseInt(userID, 10)
+					id: +userID
 				}
 			});
 
 			if (!user) {
-				return res.status(404).json({ status: 404, error: 'User not found' });
+				return res.status(404).json({ error: 'User not found' });
 			}
 
 			await this.userRepo.delete(user);

@@ -11,7 +11,7 @@ import { User } from '../../api/components/user/model';
 
 import { JwtStrategy } from './strategies/jwt';
 
-export type PassportStrategy = 'jwt' | 'basic';
+export type PassportStrategy = 'jwt';
 
 /**
  * AuthService
@@ -30,10 +30,10 @@ export class AuthService {
 	private jwtStrategy: JwtStrategy;
 
 	private readonly strategyOptions: StrategyOptions = {
-		audience: 'aionic-client',
-		issuer: 'aionic-core',
+		audience: 'expressjs-api-client',
+		issuer: 'expressjs-api',
 		jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-		secretOrKey: 'aionic-secret-api-key'
+		secretOrKey: 'my-super-secret-key'
 	};
 
 	// JWT options
@@ -69,16 +69,14 @@ export class AuthService {
 	public hasPermission(resource: string, action: string): Handler {
 		return async (req: Request, res: Response, next: NextFunction) => {
 			try {
-				if (env.NODE_ENV !== 'test') {
-					const { id } = req.user as User;
-					const access: boolean = await policy.isAllowed(id, resource, action);
+				const { id } = req.user as User;
+				const access: boolean = await policy.isAllowed(id, resource, action);
 
-					if (!access) {
-						return res.status(403).json({
-							error: 'Missing user rights',
-							status: 403
-						});
-					}
+				if (!access) {
+					return res.status(403).json({
+						error: 'Missing user rights',
+						status: 403
+					});
 				}
 
 				return next();
@@ -114,7 +112,9 @@ export class AuthService {
 				}
 
 				// Mock user
-				req.user = User.mockTestUser();
+				const testUser: User = User.mockTestUser();
+				req.user = testUser;
+				policy.addUserRoles(testUser.id, testUser.userRole.name);
 
 				return next();
 			} catch (err) {

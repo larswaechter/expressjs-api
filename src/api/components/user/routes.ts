@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { body } from 'express-validator';
 
 import { IComponentRoutes } from '../index';
 
@@ -7,6 +8,7 @@ import { AuthService, PassportStrategy } from '../../../services/auth';
 import { UserController } from './controller';
 
 export class UserRoutes implements IComponentRoutes<UserController> {
+	readonly name: string = 'user';
 	readonly controller: UserController = new UserController();
 	readonly router: Router = Router();
 	authSerivce: AuthService;
@@ -20,42 +22,52 @@ export class UserRoutes implements IComponentRoutes<UserController> {
 		this.router.get(
 			'/',
 			this.authSerivce.isAuthorized(),
-			this.authSerivce.hasPermission('user', 'read'),
+			this.authSerivce.hasPermission(this.name, 'read'),
 			this.controller.readUsers
 		);
 
 		this.router.get(
 			'/search',
 			this.authSerivce.isAuthorized(),
-			this.authSerivce.hasPermission('user', 'read'),
+			this.authSerivce.hasPermission(this.name, 'read'),
 			this.controller.readUsersByUsername
-		);
-
-		this.router.post(
-			'/',
-			this.authSerivce.isAuthorized(),
-			this.authSerivce.hasPermission('user', 'create'),
-			this.controller.createUser
 		);
 
 		this.router.get(
 			'/:userID',
 			this.authSerivce.isAuthorized(),
-			this.authSerivce.hasPermission('user', 'read'),
+			this.authSerivce.hasPermission(this.name, 'read'),
 			this.controller.readUser
+		);
+
+		this.router.post(
+			'/',
+			this.authSerivce.isAuthorized(),
+			this.authSerivce.hasPermission(this.name, 'create'),
+			body('email').isEmail(),
+			body('firstname').isString(),
+			body('lastname').isString(),
+			body('password').isString(),
+			body('active').isBoolean(),
+			this.controller.createUser
 		);
 
 		this.router.put(
 			'/:userID',
 			this.authSerivce.isAuthorized(),
-			this.authSerivce.hasPermission('user', 'update'),
+			this.authSerivce.hasPermission(this.name, 'update'),
+			body('email').isEmail(),
+			body('firstname').isString(),
+			body('lastname').isString(),
+			body('password').isString(),
+			body('active').isBoolean(),
 			this.controller.updateUser
 		);
 
 		this.router.delete(
 			'/:userID',
 			this.authSerivce.isAuthorized(),
-			this.authSerivce.hasPermission('user', 'delete'),
+			this.authSerivce.hasPermission(this.name, 'delete'),
 			this.controller.deleteUser
 		);
 	}

@@ -23,6 +23,7 @@ export interface IRepositoryServiceStrict<T> extends IRepositoryService<T> {
 }
 
 export interface IComponentRoutes<T> {
+	readonly name: string;
 	readonly controller: T;
 	readonly router: Router;
 	authSerivce: AuthService;
