@@ -30,9 +30,9 @@ export class UserRoutes implements IComponentRoutes<UserController> {
 			'/search',
 			this.authSerivce.isAuthorized(),
 			this.authSerivce.hasPermission(this.name, 'read'),
-			query('username').isString(),
+			query('email').isString(),
 			this.authSerivce.validateRequest,
-			this.controller.readUsersByUsername
+			this.controller.readUserByEmail
 		);
 
 		this.router.get(

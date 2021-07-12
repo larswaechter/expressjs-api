@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { body } from 'express-validator';
+import { body, param } from 'express-validator';
 
 import { IComponentRoutes } from '../index';
 
@@ -26,6 +26,15 @@ export class UserRoleRoutes implements IComponentRoutes<UserRoleController> {
 			this.controller.readUserRoles
 		);
 
+		this.router.get(
+			'/:roleID',
+			this.authSerivce.isAuthorized(),
+			this.authSerivce.hasPermission(this.name, 'read'),
+			param('roleID').isNumeric(),
+			this.authSerivce.validateRequest,
+			this.controller.readUserRole
+		);
+
 		this.router.post(
 			'/',
 			this.authSerivce.isAuthorized(),
@@ -33,6 +42,15 @@ export class UserRoleRoutes implements IComponentRoutes<UserRoleController> {
 			body('name').isString(),
 			this.authSerivce.validateRequest,
 			this.controller.createUserRole
+		);
+
+		this.router.delete(
+			'/:roleID',
+			this.authSerivce.isAuthorized(),
+			this.authSerivce.hasPermission(this.name, 'delete'),
+			param('roleID').isNumeric(),
+			this.authSerivce.validateRequest,
+			this.controller.deleteUserRole
 		);
 	}
 }

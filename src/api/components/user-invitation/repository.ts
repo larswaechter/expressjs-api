@@ -12,7 +12,7 @@ export class UserInvitationRepository implements IRepositoryServiceStrict<UserIn
 	 * Read all user invitations from db
 	 *
 	 * @param where Find conditions
-	 * @returns Returns an array of user invitations
+	 * @returns User invitations array
 	 */
 	@bind
 	public readAll(where: FindManyOptions<UserInvitation> = {}): Promise<UserInvitation[]> {
@@ -27,7 +27,7 @@ export class UserInvitationRepository implements IRepositoryServiceStrict<UserIn
 	 * Read a certain user invitation from db
 	 *
 	 * @param where Find conditions
-	 * @returns Returns a single user invitation
+	 * @returns User invitation
 	 */
 	@bind
 	public read(options: FindOneOptions<UserInvitation>): Promise<UserInvitation | undefined> {
@@ -42,7 +42,7 @@ export class UserInvitationRepository implements IRepositoryServiceStrict<UserIn
 	 * Save new or updated user invitation to db
 	 *
 	 * @param userInvitation User invitation to save
-	 * @returns Returns saved user invitation
+	 * @returns Saved user invitation
 	 */
 	@bind
 	public save(userInvitation: UserInvitation): Promise<UserInvitation> {
@@ -57,7 +57,7 @@ export class UserInvitationRepository implements IRepositoryServiceStrict<UserIn
 	 * Delete user invitation from db
 	 *
 	 * @param userInvitation User invitation to delete
-	 * @returns Returns deleted user invitation
+	 * @returns Deleted user invitation
 	 */
 	@bind
 	public async delete(userInvitation: UserInvitation): Promise<UserInvitation> {

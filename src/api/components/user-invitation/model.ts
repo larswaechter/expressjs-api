@@ -6,7 +6,7 @@ import { UtilityService } from '../../../services/utility';
 export class UserInvitation {
 	constructor(email: string, hash: string, active: boolean) {
 		this.email = email;
-		this.hash = hash;
+		this.uuid = hash;
 		this.active = active;
 	}
 
@@ -23,7 +23,7 @@ export class UserInvitation {
 		nullable: false,
 		unique: true
 	})
-	public hash: string;
+	public uuid: string;
 
 	@Column({
 		default: true

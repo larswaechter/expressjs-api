@@ -16,7 +16,7 @@ export class UserInvitationController {
 	 * @param req Express request
 	 * @param res Express response
 	 * @param next Express next
-	 * @returns Returns HTTP response
+	 * @returns HTTP response
 	 */
 	@bind
 	public async readUserInvitations(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
@@ -35,7 +35,7 @@ export class UserInvitationController {
 	 * @param req Express request
 	 * @param res Express response
 	 * @param next Express next
-	 * @returns Returns HTTP response
+	 * @returns HTTP response
 	 */
 	@bind
 	public async readUserInvitation(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
@@ -60,17 +60,17 @@ export class UserInvitationController {
 	 * @param req Express request
 	 * @param res Express response
 	 * @param next Express next
-	 * @returns Returns HTTP response
+	 * @returns HTTP response
 	 */
 	@bind
 	public async createUserInvitation(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
 		try {
-			const { email, hash, active } = req.body;
+			const { email, uuid, active } = req.body;
 
-			const invitation = new UserInvitation(email, hash, active);
+			const invitation = new UserInvitation(email, uuid, active);
 			const newInvitation: UserInvitation = await this.repo.save(invitation);
 
-			this.service.sendUserInvitation(newInvitation.email, newInvitation.hash);
+			this.service.sendUserInvitation(newInvitation.email, newInvitation.uuid);
 
 			return res.json(newInvitation);
 		} catch (err) {
@@ -84,7 +84,7 @@ export class UserInvitationController {
 	 * @param req Express request
 	 * @param res Express response
 	 * @param next Express next
-	 * @returns Returns HTTP response
+	 * @returns HTTP response
 	 */
 	@bind
 	public async deleteUserInvitation(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
@@ -98,7 +98,7 @@ export class UserInvitationController {
 			});
 
 			if (!invitation) {
-				return res.status(404).json({ error: 'User not found' });
+				return res.status(404).json({ error: 'User invitation not found' });
 			}
 
 			await this.repo.delete(invitation);

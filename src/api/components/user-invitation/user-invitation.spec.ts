@@ -31,7 +31,7 @@ describe('Testing user-invitation component', () => {
 				.post('/api/v1/user-invitations')
 				.send({
 					email: testInvitation.email,
-					hash: testInvitation.hash,
+					uuid: testInvitation.uuid,
 					active: testInvitation.active
 				})
 				.set('Accept', 'application/json')
@@ -47,7 +47,7 @@ describe('Testing user-invitation component', () => {
 
 						expect(invitation.id).eq(testInvitation.id, 'id does not match');
 						expect(invitation.email).eq(testInvitation.email, 'email does not match');
-						expect(invitation.hash).eq(testInvitation.hash, 'hash does not match');
+						expect(invitation.uuid).eq(testInvitation.uuid, 'uuid does not match');
 						expect(invitation.active).eq(testInvitation.active, 'active does not match');
 
 						return done();
@@ -75,7 +75,7 @@ describe('Testing user-invitation component', () => {
 
 						expect(invitations[0].id).eq(testInvitation.id, 'id does not match');
 						expect(invitations[0].email).eq(testInvitation.email, 'email does not match');
-						expect(invitations[0].hash).eq(testInvitation.hash, 'hash does not match');
+						expect(invitations[0].uuid).eq(testInvitation.uuid, 'uuid does not match');
 						expect(invitations[0].active).eq(testInvitation.active, 'active does not match');
 
 						return done();
@@ -103,7 +103,7 @@ describe('Testing user-invitation component', () => {
 
 						expect(invitation.id).eq(testInvitation.id, 'id does not match');
 						expect(invitation.email).eq(testInvitation.email, 'email does not match');
-						expect(invitation.hash).eq(testInvitation.hash, 'hash does not match');
+						expect(invitation.uuid).eq(testInvitation.uuid, 'uuid does not match');
 						expect(invitation.active).eq(testInvitation.active, 'active does not match');
 
 						return done();

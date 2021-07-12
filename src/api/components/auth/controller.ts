@@ -25,7 +25,7 @@ export class AuthController {
 	 * @param req Express request
 	 * @param res Express response
 	 * @param next Express next
-	 * @returns Returns HTTP response
+	 * @returns HTTP response
 	 */
 	@bind
 	public async signinUser(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
@@ -62,18 +62,18 @@ export class AuthController {
 	 * @param req Express request
 	 * @param res Express response
 	 * @param next Express next
-	 * @returns Returns HTTP response
+	 * @returns HTTP response
 	 */
 	@bind
 	public async registerUser(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
 		try {
-			const { hash } = req.params;
+			const { uuid } = req.params;
 			const { email, firstname, lastname, password } = req.body;
 
-			const invitation: UserInvitation | undefined = await this.getUserInvitation(hash, email);
+			const invitation: UserInvitation | undefined = await this.getUserInvitation(uuid, email);
 
 			if (!invitation) {
-				return res.status(403).json({ error: 'Invalid hash' });
+				return res.status(403).json({ error: 'Invalid UUID' });
 			}
 
 			const user: User | undefined = await this.userRepo.read({
@@ -105,7 +105,7 @@ export class AuthController {
 	 * @param req Express request
 	 * @param res Express response
 	 * @param next Express next
-	 * @returns Returns HTTP response
+	 * @returns HTTP response
 	 */
 	@bind
 	public async createUserInvitation(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
@@ -123,16 +123,16 @@ export class AuthController {
 			}
 
 			// UUID for registration link
-			const hash = UtilityService.generateUuid();
+			const uuid = UtilityService.generateUuid();
 
 			await this.userInvRepo.save({
 				email,
-				hash
+				uuid: uuid
 			} as UserInvitation);
 
-			await this.userInvMailService.sendUserInvitation(email, hash);
+			await this.userInvMailService.sendUserInvitation(email, uuid);
 
-			return res.status(204).send();
+			return res.status(200).json(uuid);
 		} catch (err) {
 			return next(err);
 		}
@@ -144,7 +144,7 @@ export class AuthController {
 	 * @param req Express request
 	 * @param res Express response
 	 * @param next Express next
-	 * @returns Returns HTTP response
+	 * @returns HTTP response
 	 */
 	@bind
 	public async unregisterUser(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
@@ -173,37 +173,16 @@ export class AuthController {
 	}
 
 	/**
-	 * Validate hash required for registration
-	 *
-	 * @param req Express request
-	 * @param res Express response
-	 * @param next Express next
-	 * @returns Returns HTTP response
-	 */
-	@bind
-	public async validateRegistrationHash(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
-		try {
-			const { hash } = req.params;
-
-			const invitation = await this.getUserInvitation(hash);
-			return invitation ? res.status(204).send() : res.status(403).json({ error: 'Invalid hash' });
-		} catch (err) {
-			return next(err);
-		}
-	}
-
-	/**
 	 * Get user invitation
 	 *
-	 * @param hash
+	 * @param uuid
 	 * @param email
-	 * @returns Returns user invitation
+	 * @returns User invitation
 	 */
 	@bind
-	private async getUserInvitation(hash: string, email?: string): Promise<UserInvitation | undefined> {
+	private async getUserInvitation(uuid: string, email: string): Promise<UserInvitation | undefined> {
 		try {
-			const options = { where: email === undefined ? { hash } : { hash, email } };
-			return this.userInvRepo.read(options);
+			return this.userInvRepo.read({ where: { uuid, email } });
 		} catch (err) {
 			throw err;
 		}

@@ -1,5 +1,5 @@
 import { bind } from 'decko';
-import { Repository, FindConditions, getManager } from 'typeorm';
+import { Repository, FindConditions, getManager, FindOneOptions } from 'typeorm';
 
 import { CacheService } from '../../../services/cache';
 
@@ -8,7 +8,6 @@ import { IRepositoryService } from '../index';
 
 export class UserRoleRepository implements IRepositoryService<UserRole> {
 	readonly cacheService: CacheService = new CacheService();
-
 	readonly repo: Repository<UserRole> = getManager().getRepository(UserRole);
 
 	/**
@@ -16,7 +15,7 @@ export class UserRoleRepository implements IRepositoryService<UserRole> {
 	 *
 	 * @param where Find conditions
 	 * @param cached Read user roles from cache
-	 * @returns Returns an array of user roles
+	 * @returns User roles array
 	 */
 	@bind
 	public readAll(where: FindConditions<UserRole> = {}, cached: boolean = false): Promise<UserRole[]> {
@@ -38,20 +37,53 @@ export class UserRoleRepository implements IRepositoryService<UserRole> {
 	}
 
 	/**
+	 * Read a certain user role from db
+	 *
+	 * @param options Find options
+	 * @returns User
+	 */
+	@bind
+	public read(options: FindOneOptions<UserRole> = {}): Promise<UserRole | undefined> {
+		try {
+			return this.repo.findOne(options);
+		} catch (err) {
+			throw new Error(err);
+		}
+	}
+
+	/**
 	 * Save new or updated user-role to db
 	 *
 	 * @param user User-role to save
-	 * @returns Returns saved user-role
+	 * @returns Saved user-role
 	 */
 	@bind
 	public async save(userRole: UserRole): Promise<UserRole> {
 		try {
 			const newUserRole: UserRole = await this.repo.save(userRole);
 
-			// Clear user cache
 			this.cacheService.delete('user-role');
 
 			return newUserRole;
+		} catch (err) {
+			throw new Error(err);
+		}
+	}
+
+	/**
+	 * Delete user role from db
+	 *
+	 * @param userRole User-role to delete
+	 * @returns Deleted user-role
+	 */
+	@bind
+	public async delete(userRole: UserRole): Promise<UserRole> {
+		try {
+			const deletedRole = await this.repo.remove(userRole);
+
+			this.cacheService.delete('user-role');
+
+			return deletedRole;
 		} catch (err) {
 			throw new Error(err);
 		}

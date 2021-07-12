@@ -112,11 +112,11 @@ describe('Testing user component', () => {
 
 						assert.isArray(users, 'users should be an array');
 
-						assert(users[0].id === testUserUpdated.id, 'id does not match');
-						assert(users[0].email === testUserUpdated.email, 'email does not match');
-						assert(users[0].firstname === testUserUpdated.firstname, 'firstname does not match');
-						assert(users[0].lastname === testUserUpdated.lastname, 'lastname does not match');
-						assert(users[0].active === testUserUpdated.active, 'active does not match');
+						expect(users[0].id).eq(testUserUpdated.id, 'id does not match');
+						expect(users[0].email).eq(testUserUpdated.email, 'email does not match');
+						expect(users[0].firstname).eq(testUserUpdated.firstname, 'firstname does not match');
+						expect(users[0].lastname).eq(testUserUpdated.lastname, 'lastname does not match');
+						expect(users[0].active).eq(testUserUpdated.active, 'active does not match');
 
 						return done();
 					} catch (err) {
@@ -156,10 +156,10 @@ describe('Testing user component', () => {
 	});
 
 	describe('GET /users/search', () => {
-		it('responds with user array', (done) => {
+		it('responds with single user', (done) => {
 			factory.app
-				.get('/api/v1/users')
-				.query({ username: 'testFirstnameModified testLastnameModified' })
+				.get('/api/v1/users/search')
+				.query({ email: testUserUpdated.email })
 				.set('Accept', 'application/json')
 				.expect('Content-Type', /json/)
 				.expect(200)
@@ -167,15 +167,15 @@ describe('Testing user component', () => {
 					try {
 						if (err) throw err;
 
-						const users: User[] = res.body;
+						const user: User = res.body;
 
-						assert.isArray(users, 'users should be an array');
+						assert.isObject(user, 'user should be an object');
 
-						expect(users[0].id).eq(testUserUpdated.id, 'id does not match');
-						expect(users[0].email).eq(testUserUpdated.email, 'email does not match');
-						expect(users[0].firstname).eq(testUserUpdated.firstname, 'firstname does not match');
-						expect(users[0].lastname).eq(testUserUpdated.lastname, 'lastname does not match');
-						expect(users[0].active).eq(testUserUpdated.active, 'active does not match');
+						expect(user.id).eq(testUserUpdated.id, 'id does not match');
+						expect(user.email).eq(testUserUpdated.email, 'email does not match');
+						expect(user.firstname).eq(testUserUpdated.firstname, 'firstname does not match');
+						expect(user.lastname).eq(testUserUpdated.lastname, 'lastname does not match');
+						expect(user.active).eq(testUserUpdated.active, 'active does not match');
 
 						return done();
 					} catch (err) {

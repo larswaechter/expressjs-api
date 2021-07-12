@@ -1,6 +1,5 @@
 import { bind } from 'decko';
 import { NextFunction, Request, Response } from 'express';
-import { validationResult } from 'express-validator';
 
 import { UserRole } from './model';
 import { UserRoleRepository } from './repository';
@@ -14,7 +13,7 @@ export class UserRoleController {
 	 * @param req Express request
 	 * @param res Express response
 	 * @param next Express next
-	 * @returns Returns HTTP response
+	 * @returns HTTP response
 	 */
 	@bind
 	public async readUserRoles(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
@@ -27,12 +26,37 @@ export class UserRoleController {
 	}
 
 	/**
+	 * Read user
+	 *
+	 * @param req Express request
+	 * @param res Express response
+	 * @param next Express next
+	 * @returns HTTP response
+	 */
+	@bind
+	public async readUserRole(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+		try {
+			const { roleID } = req.params;
+
+			const userRole: UserRole | undefined = await this.repo.read({
+				where: {
+					id: +roleID
+				}
+			});
+
+			return res.json(userRole);
+		} catch (err) {
+			return next(err);
+		}
+	}
+
+	/**
 	 * Create user role
 	 *
 	 * @param req Express request
 	 * @param res Express response
 	 * @param next Express next
-	 * @returns Returns HTTP response
+	 * @returns HTTP response
 	 */
 	@bind
 	public async createUserRole(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
@@ -43,6 +67,37 @@ export class UserRoleController {
 			const newRole: UserRole = await this.repo.save(role);
 
 			return res.json(newRole);
+		} catch (err) {
+			return next(err);
+		}
+	}
+
+	/**
+	 * Delete user role
+	 *
+	 * @param req Express request
+	 * @param res Express response
+	 * @param next Express next
+	 * @returns HTTP response
+	 */
+	@bind
+	public async deleteUserRole(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+		try {
+			const { roleID } = req.params;
+
+			const userRole: UserRole | undefined = await this.repo.read({
+				where: {
+					id: +roleID
+				}
+			});
+
+			if (!userRole) {
+				return res.status(404).json({ error: 'User role not found' });
+			}
+
+			await this.repo.delete(userRole);
+
+			return res.status(204).send();
 		} catch (err) {
 			return next(err);
 		}

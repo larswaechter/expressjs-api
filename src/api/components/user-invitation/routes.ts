@@ -40,7 +40,7 @@ export class UserInvitationRoutes implements IComponentRoutes<UserInvitationCont
 			this.authSerivce.isAuthorized(),
 			this.authSerivce.hasPermission(this.name, 'create'),
 			body('email').isEmail(),
-			body('hash').isUUID(),
+			body('uuid').isUUID(),
 			body('active').isBoolean(),
 			this.authSerivce.validateRequest,
 			this.controller.createUserInvitation

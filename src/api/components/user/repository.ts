@@ -16,8 +16,8 @@ export class UserRepository implements IRepositoryServiceStrict<User> {
 	 * Read all users from db
 	 *
 	 * @param options Find options
-	 * @param cached Read users from cache
-	 * @returns Returns an array of users
+	 * @param cached Use cache
+	 * @returns Users array
 	 */
 	@bind
 	public readAll(options: FindManyOptions<User> = {}, cached: boolean = false): Promise<User[]> {
@@ -42,23 +42,19 @@ export class UserRepository implements IRepositoryServiceStrict<User> {
 	}
 
 	/**
-	 * Read users from db by username
+	 * Read user by email from db
 	 *
-	 * @param username Username to search for
-	 * @returns Returns an array of users
+	 * @param email Email to search for
+	 * @returns User
 	 */
 	@bind
-	public readUsersByUsername(username: string): Promise<User[]> {
+	public readByEmail(email: string): Promise<User> {
 		try {
-			let where: FindConditions<User> = {};
-
-			if (username) {
-				const [firstname, lastname] = username.split(' ');
-				if (firstname) where = { ...where, firstname: Like(`%${firstname}%`) };
-				if (lastname) where = { ...where, lastname: Like(`%${lastname}%`) };
-			}
-
-			return this.readAll({ where });
+			return this.read({
+				where: {
+					email
+				}
+			});
 		} catch (err) {
 			throw new Error(err);
 		}
@@ -68,7 +64,7 @@ export class UserRepository implements IRepositoryServiceStrict<User> {
 	 * Read a certain user from db
 	 *
 	 * @param options Find options
-	 * @returns Returns a single user
+	 * @returns User
 	 */
 	@bind
 	public read(options: FindOneOptions<User> = {}): Promise<User | undefined> {
@@ -86,7 +82,7 @@ export class UserRepository implements IRepositoryServiceStrict<User> {
 	 * Save new or updated user to db
 	 *
 	 * @param user User to save
-	 * @returns Returns saved user
+	 * @returns Saved user
 	 */
 	@bind
 	public async save(user: User): Promise<User> {
@@ -106,14 +102,13 @@ export class UserRepository implements IRepositoryServiceStrict<User> {
 	 * Delete user from db
 	 *
 	 * @param user User to delete
-	 * @returns Returns deleted user
+	 * @returns Deleted user
 	 */
 	@bind
 	public async delete(user: User): Promise<User> {
 		try {
 			const deletedUser = await this.repo.remove(user);
 
-			// Clear user cache
 			this.cacheService.delete('user');
 
 			return deletedUser;

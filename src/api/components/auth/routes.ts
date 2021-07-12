@@ -26,28 +26,25 @@ export class AuthRoutes implements IComponentRoutes<AuthController> {
 			this.authSerivce.validateRequest,
 			this.controller.signinUser
 		);
-		this.router.get(
-			'/register/:hash',
-			param('hash').isUUID(),
-			this.authSerivce.validateRequest,
-			this.controller.validateRegistrationHash
-		);
+
 		this.router.post(
-			'/register/:hash',
-			param('hash').isUUID(),
+			'/register/:uuid',
+			param('uuid').isUUID(),
 			body('email').isEmail(),
-			body('firstname').isEmail(),
-			body('lastname').isEmail(),
+			body('firstname').isString(),
+			body('lastname').isString(),
 			body('password').isString(),
 			this.authSerivce.validateRequest,
 			this.controller.registerUser
 		);
+
 		this.router.post(
 			'/invite',
 			body('email').isEmail(),
 			this.authSerivce.validateRequest,
 			this.controller.createUserInvitation
 		);
+
 		this.router.post('/unregister', this.authSerivce.isAuthorized(), this.controller.unregisterUser);
 	}
 }
