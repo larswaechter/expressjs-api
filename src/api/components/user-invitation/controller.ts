@@ -67,7 +67,7 @@ export class UserInvitationController {
 		try {
 			const { email, uuid, active } = req.body;
 
-			const invitation = new UserInvitation(email, uuid, active);
+			const invitation = new UserInvitation(undefined, email, uuid, active);
 			const newInvitation: UserInvitation = await this.repo.save(invitation);
 
 			this.service.sendUserInvitation(newInvitation.email, newInvitation.uuid);

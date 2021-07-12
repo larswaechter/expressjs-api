@@ -29,9 +29,11 @@ export class UserRepository implements IRepositoryServiceStrict<User> {
 				});
 			}
 
+			/*
 			if (cached) {
 				return this.cacheService.get('user', this.readAll);
 			}
+			*/
 
 			return this.repo.find({
 				relations: this.defaultRelations

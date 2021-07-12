@@ -97,7 +97,14 @@ export class UserController {
 				return res.status(400).json({ error: 'Email is already taken' });
 			}
 
-			const user: User = new User(email, firstname, lastname, await UtilityService.hashPassword(password), active);
+			const user: User = new User(
+				undefined,
+				email,
+				firstname,
+				lastname,
+				await UtilityService.hashPassword(password),
+				active
+			);
 			const newUser: User = await this.repo.save(user);
 
 			return res.json(newUser);

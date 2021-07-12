@@ -33,13 +33,13 @@ export class AuthController {
 			const { email, password } = req.body;
 
 			const user: User | undefined = await this.userRepo.read({
+				select: ['id', 'email', 'firstname', 'lastname', 'password', 'active'],
 				where: {
 					email,
 					active: true
 				}
 			});
 
-			// Wrong email or password
 			if (!user || !(await UtilityService.verifyPassword(password, user.password))) {
 				return res.status(401).json({ status: 401, error: 'Wrong email or password' });
 			}
@@ -86,14 +86,23 @@ export class AuthController {
 				return res.status(400).json({ error: 'Email is already taken' });
 			}
 
-			const newUser = new User(email, firstname, lastname, await UtilityService.hashPassword(password), true);
+			const newUser = new User(
+				undefined,
+				email,
+				firstname,
+				lastname,
+				await UtilityService.hashPassword(password),
+				true
+			);
 			newUser.userRole = new UserRole(1, 'Admin');
+
+			const savedUser = await this.userRepo.save(newUser);
 
 			this.cacheService.delete('user');
 
 			await this.userInvRepo.delete(invitation);
 
-			return res.status(204).send();
+			return res.status(200).json(savedUser);
 		} catch (err) {
 			return next(err);
 		}
@@ -125,11 +134,9 @@ export class AuthController {
 			// UUID for registration link
 			const uuid = UtilityService.generateUuid();
 
-			await this.userInvRepo.save({
-				email,
-				uuid: uuid
-			} as UserInvitation);
+			const invitation: UserInvitation = new UserInvitation(undefined, email, uuid, true);
 
+			await this.userInvRepo.save(invitation);
 			await this.userInvMailService.sendUserInvitation(email, uuid);
 
 			return res.status(200).json(uuid);

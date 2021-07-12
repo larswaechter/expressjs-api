@@ -4,7 +4,8 @@ import { UserRole } from '../user-role/model';
 
 @Entity()
 export class User {
-	constructor(email: string, firstname: string, lastname: string, password: string, active: boolean) {
+	constructor(id: number, email: string, firstname: string, lastname: string, password: string, active: boolean) {
+		this.id = id;
 		this.email = email;
 		this.firstname = firstname;
 		this.lastname = lastname;
@@ -44,8 +45,7 @@ export class User {
 	public userRole: UserRole;
 
 	public static mockTestUser(): User {
-		const user = new User('test@email.com', 'testFirstname', 'testLastname', 'testPassword', true);
-		user.id = 1;
+		const user = new User(1, 'test@email.com', 'testFirstname', 'testLastname', 'testPassword', true);
 		user.userRole = new UserRole(1, 'Admin');
 		return user;
 	}

@@ -4,7 +4,8 @@ import { UtilityService } from '../../../services/utility';
 
 @Entity()
 export class UserInvitation {
-	constructor(email: string, hash: string, active: boolean) {
+	constructor(id: number, email: string, hash: string, active: boolean) {
+		this.id = id;
 		this.email = email;
 		this.uuid = hash;
 		this.active = active;
@@ -31,8 +32,6 @@ export class UserInvitation {
 	public active: boolean;
 
 	public static mockTestUserInvitation(): UserInvitation {
-		const userInvitation: UserInvitation = new UserInvitation('test@email.com', UtilityService.generateUuid(), true);
-		userInvitation.id = 1;
-		return userInvitation;
+		return new UserInvitation(1, 'test@email.com', UtilityService.generateUuid(), true);
 	}
 }
