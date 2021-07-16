@@ -2,7 +2,7 @@
 /*
   ##### Global database seeding #####
   Run the following command after all tables were created:
-  'yarn seed global'
+  'npm run seed'
 */
 
 /* Insert user roles */
