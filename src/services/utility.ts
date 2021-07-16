@@ -25,7 +25,7 @@ export class UtilityService {
 	 * Hash plain password
 	 *
 	 * @param plainPassword Password to hash
-	 * @returns Returns hashed password
+	 * @returns hashed password
 	 */
 	public static hashPassword(plainPassword: string): Promise<string> {
 		return new Promise((resolve, reject) => {
@@ -50,7 +50,7 @@ export class UtilityService {
 	 *
 	 * @param plainPassword Plain password to compare
 	 * @param hashedPassword Hashed password to compare
-	 * @returns Returns if passwords match
+	 * @returns whether passwords match
 	 */
 	public static verifyPassword(plainPassword: string, hashedPassword: string): Promise<boolean> {
 		return new Promise((resolve, reject) => {
@@ -76,7 +76,7 @@ export class UtilityService {
 	/**
 	 * Generate UUID
 	 *
-	 * @returns Returns UUID
+	 * @returns UUID
 	 */
 	public static generateUuid(): string {
 		return uuidv1();

@@ -18,7 +18,7 @@ export class MailService {
 	 *
 	 * @param options Mail options
 	 * @param forceSend Force email to be sent
-	 * @returns Returns info of sent mail
+	 * @returns info of sent mail
 	 */
 	public sendMail(options: SendMailOptions, forceSend: boolean = false): Promise<SentMessageInfo> | void {
 		if (env.NODE_ENV === 'production' || forceSend) {

@@ -8,7 +8,7 @@ describe('Testing auth component', () => {
 	const factory: TestFactory = new TestFactory();
 	const testUser: User = new User(1, 'peter@griffin.com', 'Peter', 'Griffin', '1234', true);
 
-	let invitationUUID;
+	let invitationUUID: string;
 
 	before(async () => {
 		await factory.init();

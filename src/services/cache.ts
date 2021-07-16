@@ -11,7 +11,7 @@ export class CacheService {
 	 * @param key Cache key
 	 * @param storeFunction Function to execute if key is not set
 	 * @param storeFunctionArgs Arguments for store function
-	 * @returns Returns cache key value
+	 * @returns cache key value
 	 */
 	public get(
 		key: string,
