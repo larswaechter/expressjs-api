@@ -42,22 +42,19 @@ export class JwtStrategy extends BaseStrategy {
 					switch (info.message) {
 						case 'No auth token':
 							return res.status(401).json({
-								error: 'No jwt provided.',
-								status: 401
+								error: 'No jwt provided!'
 							});
 
 						case 'jwt expired':
 							return res.status(401).json({
-								error: 'Jwt expired.',
-								status: 401
+								error: 'Jwt expired!'
 							});
 					}
 				}
 
 				if (!user) {
 					return res.status(401).json({
-						data: 'User is not authorized',
-						status: 401
+						error: 'User is not authorized!'
 					});
 				}
 

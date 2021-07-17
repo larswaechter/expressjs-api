@@ -74,8 +74,7 @@ export class AuthService {
 
 				if (!access) {
 					return res.status(403).json({
-						error: 'Missing user rights',
-						status: 403
+						error: 'Missing user rights!'
 					});
 				}
 
