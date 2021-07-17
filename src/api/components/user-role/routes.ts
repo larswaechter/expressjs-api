@@ -21,8 +21,8 @@ export class UserRoleRoutes implements IComponentRoutes<UserRoleController> {
 	initRoutes(): void {
 		this.router.get(
 			'/',
-			/*this.authSerivce.isAuthorized(),
-			this.authSerivce.hasPermission(this.name, 'read'),*/
+			this.authSerivce.isAuthorized(),
+			this.authSerivce.hasPermission(this.name, 'read'),
 			this.controller.readUserRoles
 		);
 

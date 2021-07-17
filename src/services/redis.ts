@@ -1,10 +1,12 @@
 import { createClient, RedisClient } from 'redis';
 
+import { env } from '../config/globals';
+
 export class RedisService {
 	private static client: RedisClient;
 
 	static connect() {
-		this.client = createClient();
+		this.client = createClient(env.REDIS_URL);
 	}
 
 	static disconnect() {

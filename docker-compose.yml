@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  server:
+    build: .
+    container_name: expressjs-api
+    depends_on:
+      - mysql
+      - redis
+    ports:
+      - 8080:3000
+    links:
+      - mysql
+      - redis
+    env_file:
+      - .env.docker
+    command: npm run start-docker
+  mysql:
+    image: mysql
+    restart: always
+    env_file:
+      - .env.docker
+    environment:
+      MYSQL_ROOT_PASSWORD: $TYPEORM_PASSWORD
+      MYSQL_DATABASE: $TYPEORM_DATABASE
+    cap_add:
+      - SYS_NICE # CAP_SYS_NICE
+    ports:
+      - 11543:3306
+    volumes:
+      - db-config:/etc/mysql
+      - db-data:/var/lib/mysql
+      - ./db/backup/files/:/data_backup/data
+  redis:
+    image: redis
+    expose:
+      - 6379
+
+volumes:
+  db-config:
+  db-data:

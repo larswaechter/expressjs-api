@@ -1,12 +1,14 @@
 {
 	"name": "express-example-api",
 	"version": "1.0.0",
+	"author": "Lars Wächter",
 	"description": "An example Node.js REST-API built with Express.js",
 	"homepage": "https://larswaechter.dev/blog/nodejs-rest-api-structure/",
 	"repository": "https://github.com/larswaechter/expressjs-api",
 	"main": "./dist/app.js",
 	"scripts": {
 		"start": "node ./dist/app.js",
+		"start-docker": "npm run build && npm start",
 		"build": "rm -rf dist && tsc -p tsconfig.json && gulp copy && gulp merge",
 		"watch": "nodemon --exec \"npm run build && npm run start\" --watch src --ext ts",
 		"watch-dirty": "nodemon --exec \"tsc -p tsconfig.json && npm run start\" --watch src --ext ts",
@@ -15,7 +17,6 @@
 		"lint": "tslint -p tsconfig.json",
 		"prettier": "prettier --config ./.prettierrc --write src/**/*.ts"
 	},
-	"author": "Lars Wächter",
 	"license": "MIT",
 	"devDependencies": {
 		"@types/acl": "^0.4.38",
@@ -56,7 +57,7 @@
 		"express-validator": "^6.12.0",
 		"helmet": "^4.6.0",
 		"jsonwebtoken": "^8.5.1",
-		"mysql": "^2.18.1",
+		"mysql2": "^2.2.5",
 		"node-cache": "^5.1.2",
 		"nodemailer": "^6.6.2",
 		"passport": "^0.4.1",
