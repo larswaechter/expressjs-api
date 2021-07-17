@@ -18,7 +18,7 @@ export class UserController {
 	 * @returns HTTP response
 	 */
 	@bind
-	public async readUsers(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+	async readUsers(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
 		try {
 			const users: User[] = await this.repo.readAll({}, true);
 
@@ -37,7 +37,7 @@ export class UserController {
 	 * @returns HTTP response
 	 */
 	@bind
-	public async readUser(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+	async readUser(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
 		try {
 			const { userID } = req.params;
 
@@ -62,7 +62,7 @@ export class UserController {
 	 * @returns HTTP response
 	 */
 	@bind
-	public async readUserByEmail(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+	async readUserByEmail(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
 		try {
 			const { email } = req.query;
 
@@ -83,7 +83,7 @@ export class UserController {
 	 * @returns HTTP response
 	 */
 	@bind
-	public async createUser(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+	async createUser(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
 		try {
 			const { email, firstname, lastname, password, active } = req.body;
 
@@ -122,7 +122,7 @@ export class UserController {
 	 * @returns HTTP response
 	 */
 	@bind
-	public async updateUser(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+	async updateUser(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
 		try {
 			const { userID } = req.params;
 			const { email, firstname, lastname, password, active } = req.body;
@@ -164,7 +164,7 @@ export class UserController {
 	 * @returns HTTP response
 	 */
 	@bind
-	public async deleteUser(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+	async deleteUser(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
 		try {
 			const { userID } = req.params;
 

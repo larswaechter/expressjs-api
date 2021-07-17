@@ -13,7 +13,7 @@ export class AuthRoutes implements IComponentRoutes<AuthController> {
 	readonly router: Router = Router();
 	authSerivce: AuthService;
 
-	public constructor(defaultStrategy?: PassportStrategy) {
+	constructor(defaultStrategy?: PassportStrategy) {
 		this.authSerivce = new AuthService(defaultStrategy);
 		this.initRoutes();
 	}

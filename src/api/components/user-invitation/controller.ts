@@ -19,7 +19,7 @@ export class UserInvitationController {
 	 * @returns HTTP response
 	 */
 	@bind
-	public async readUserInvitations(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+	async readUserInvitations(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
 		try {
 			const userInvitations: UserInvitation[] = await this.repo.readAll();
 
@@ -38,7 +38,7 @@ export class UserInvitationController {
 	 * @returns HTTP response
 	 */
 	@bind
-	public async readUserInvitation(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+	async readUserInvitation(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
 		try {
 			const { invitationID } = req.params;
 
@@ -63,7 +63,7 @@ export class UserInvitationController {
 	 * @returns HTTP response
 	 */
 	@bind
-	public async createUserInvitation(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+	async createUserInvitation(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
 		try {
 			const { email, uuid, active } = req.body;
 
@@ -87,7 +87,7 @@ export class UserInvitationController {
 	 * @returns HTTP response
 	 */
 	@bind
-	public async deleteUserInvitation(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+	async deleteUserInvitation(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
 		try {
 			const { invitationID } = req.params;
 

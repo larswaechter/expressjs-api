@@ -13,7 +13,7 @@ export class UserRoutes implements IComponentRoutes<UserController> {
 	readonly router: Router = Router();
 	authSerivce: AuthService;
 
-	public constructor(defaultStrategy?: PassportStrategy) {
+	constructor(defaultStrategy?: PassportStrategy) {
 		this.authSerivce = new AuthService(defaultStrategy);
 		this.initRoutes();
 	}
@@ -21,8 +21,8 @@ export class UserRoutes implements IComponentRoutes<UserController> {
 	initRoutes(): void {
 		this.router.get(
 			'/',
-			this.authSerivce.isAuthorized(),
-			this.authSerivce.hasPermission(this.name, 'read'),
+			/*	this.authSerivce.isAuthorized(),
+			this.authSerivce.hasPermission(this.name, 'read'), */
 			this.controller.readUsers
 		);
 

@@ -16,7 +16,7 @@ export class UserRoleController {
 	 * @returns HTTP response
 	 */
 	@bind
-	public async readUserRoles(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+	async readUserRoles(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
 		try {
 			const userRoles: UserRole[] = await this.repo.readAll({}, true);
 			return res.json(userRoles);
@@ -34,7 +34,7 @@ export class UserRoleController {
 	 * @returns HTTP response
 	 */
 	@bind
-	public async readUserRole(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+	async readUserRole(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
 		try {
 			const { roleID } = req.params;
 
@@ -59,7 +59,7 @@ export class UserRoleController {
 	 * @returns HTTP response
 	 */
 	@bind
-	public async createUserRole(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+	async createUserRole(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
 		try {
 			const { name } = req.body;
 
@@ -81,7 +81,7 @@ export class UserRoleController {
 	 * @returns HTTP response
 	 */
 	@bind
-	public async deleteUserRole(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+	async deleteUserRole(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
 		try {
 			const { roleID } = req.params;
 

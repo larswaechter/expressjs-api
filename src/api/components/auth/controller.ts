@@ -2,7 +2,6 @@ import { bind } from 'decko';
 import { NextFunction, Request, Response } from 'express';
 
 import { AuthService } from '../../../services/auth';
-import { CacheService } from '../../../services/cache';
 import { UtilityService } from '../../../services/utility';
 
 import { User } from '../user/model';
@@ -16,7 +15,6 @@ import { UserInvitationMailService } from '../user-invitation/services/mail';
 export class AuthController {
 	private readonly authService: AuthService = new AuthService();
 	private readonly userInvMailService: UserInvitationMailService = new UserInvitationMailService();
-	private readonly cacheService: CacheService = new CacheService();
 
 	private readonly userRepo: UserRepository = new UserRepository();
 	private readonly userInvRepo: UserInvitationRepository = new UserInvitationRepository();
@@ -28,7 +26,7 @@ export class AuthController {
 	 * @returns HTTP response
 	 */
 	@bind
-	public async signinUser(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+	async signinUser(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
 		try {
 			const { email, password } = req.body;
 
@@ -65,7 +63,7 @@ export class AuthController {
 	 * @returns HTTP response
 	 */
 	@bind
-	public async registerUser(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+	async registerUser(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
 		try {
 			const { uuid } = req.params;
 			const { email, firstname, lastname, password } = req.body;
@@ -98,7 +96,7 @@ export class AuthController {
 
 			const savedUser = await this.userRepo.save(newUser);
 
-			this.cacheService.delete('user');
+			this.userRepo.deleteFromCache();
 
 			await this.userInvRepo.delete(invitation);
 
@@ -117,7 +115,7 @@ export class AuthController {
 	 * @returns HTTP response
 	 */
 	@bind
-	public async createUserInvitation(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+	async createUserInvitation(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
 		try {
 			const { email } = req.body;
 
@@ -154,7 +152,7 @@ export class AuthController {
 	 * @returns HTTP response
 	 */
 	@bind
-	public async unregisterUser(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+	async unregisterUser(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
 		try {
 			const { email } = req.user as User;
 
@@ -170,8 +168,7 @@ export class AuthController {
 
 			await this.userRepo.delete(user);
 
-			// Clear user cache
-			this.cacheService.delete('user');
+			this.userRepo.deleteFromCache();
 
 			return res.status(204).send();
 		} catch (err) {

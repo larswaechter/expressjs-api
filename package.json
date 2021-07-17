@@ -62,6 +62,7 @@
 		"passport": "^0.4.1",
 		"passport-http": "^0.3.0",
 		"passport-jwt": "^4.0.0",
+		"redis": "^2.8.0",
 		"typeorm": "^0.2.34",
 		"uuid": "^8.3.2",
 		"validator": "^13.6.0",

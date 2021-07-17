@@ -12,7 +12,7 @@ export class UserInvitationMailService extends MailService {
 	 * @param uuid UUID for registration link
 	 * @returns Returns info of sent mail
 	 */
-	public async sendUserInvitation(email: string, uuid: string): Promise<SentMessageInfo> {
+	async sendUserInvitation(email: string, uuid: string): Promise<SentMessageInfo> {
 		const templateParams = {
 			confirmUrl: `${env.DOMAIN}/register/${uuid}?email=${email}`
 		};

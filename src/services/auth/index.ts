@@ -19,7 +19,6 @@ export type PassportStrategy = 'jwt';
  *
  * Available passport strategies for authentication:
  *  - JWT (default)
- *  - Basic Auth
  *
  * Pass a strategy when initializing module routes to setup this strategy for the complete module: Example: new UserRoutes('jwt')
  *
@@ -156,7 +155,7 @@ export class AuthService {
 				case 'jwt':
 					return this.jwtStrategy.isAuthorized(req, res, next);
 				default:
-					throw new Error(`Unknown passport strategy: ${this.defaultStrategy}`);
+					throw new Error(`Unknown passport strategy: ${strategy}`);
 			}
 		} catch (err) {
 			return next(err);
