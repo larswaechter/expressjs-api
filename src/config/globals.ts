@@ -18,5 +18,5 @@ export const env = {
 };
 
 export const mails = {
-	support: 'support@dummy-company-com'
+	support: 'support@my-company.com'
 };

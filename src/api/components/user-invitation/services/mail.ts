@@ -10,11 +10,11 @@ export class UserInvitationMailService extends MailService {
 	 *
 	 * @param email Email to which the invitation is sent
 	 * @param uuid UUID for registration link
-	 * @returns Returns info of sent mail
+	 * @returns Info of sent mail
 	 */
 	async sendUserInvitation(email: string, uuid: string): Promise<SentMessageInfo> {
 		const templateParams = {
-			confirmUrl: `${env.DOMAIN}/register/${uuid}?email=${email}`
+			confirmUrl: `${env.DOMAIN}/register/${uuid}?email=${encodeURIComponent(email)}`
 		};
 
 		const mailTemplate = await this.renderMailTemplate(

@@ -7,11 +7,13 @@ services:
     depends_on:
       - mysql
       - redis
+      - mailhog
     ports:
       - 8080:3000
     links:
       - mysql
       - redis
+      - mailhog
     env_file:
       - .env.docker
     command: npm run start-docker
@@ -32,8 +34,15 @@ services:
       - db-data:/var/lib/mysql
   redis:
     image: redis
+    restart: always
     expose:
       - 6379
+  mailhog:
+    image: mailhog/mailhog
+    restart: always
+    ports:
+      - 1025:1025
+      - 8025:8025
 
 volumes:
   db-config:

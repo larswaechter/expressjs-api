@@ -117,14 +117,24 @@ export class AuthController {
 		try {
 			const { email } = req.body;
 
-			const user: User | undefined = await this.userRepo.read({
+			const existingUser: User | undefined = await this.userRepo.read({
 				where: {
 					email
 				}
 			});
 
-			if (user) {
+			if (existingUser) {
 				return res.status(400).json({ error: 'Email is already taken' });
+			}
+
+			const existingInvitation: UserInvitation | undefined = await this.userInvRepo.read({
+				where: {
+					email
+				}
+			});
+
+			if (existingInvitation) {
+				return res.status(400).json({ error: 'User is already invited' });
 			}
 
 			// UUID for registration link
