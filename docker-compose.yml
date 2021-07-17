@@ -9,7 +9,7 @@ services:
       - redis
       - mailhog
     ports:
-      - 8080:3000
+      - 3000:3000
     links:
       - mysql
       - redis

@@ -58,7 +58,6 @@
 		"helmet": "^4.6.0",
 		"jsonwebtoken": "^8.5.1",
 		"mysql2": "^2.2.5",
-		"node-cache": "^5.1.2",
 		"nodemailer": "^6.6.2",
 		"passport": "^0.4.1",
 		"passport-http": "^0.3.0",
