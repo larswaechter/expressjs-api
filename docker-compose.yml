@@ -24,13 +24,12 @@ services:
       MYSQL_ROOT_PASSWORD: $TYPEORM_PASSWORD
       MYSQL_DATABASE: $TYPEORM_DATABASE
     cap_add:
-      - SYS_NICE # CAP_SYS_NICE
+      - SYS_NICE
     ports:
       - 11543:3306
     volumes:
       - db-config:/etc/mysql
       - db-data:/var/lib/mysql
-      - ./db/backup/files/:/data_backup/data
   redis:
     image: redis
     expose:

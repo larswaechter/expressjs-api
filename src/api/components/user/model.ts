@@ -41,8 +41,14 @@ export class User {
 	@CreateDateColumn()
 	public created: Timestamp;
 
-	@ManyToOne((type) => UserRole, (userRole) => userRole.users)
+	@ManyToOne(() => UserRole, (userRole) => userRole.users)
 	public userRole: UserRole;
+
+	static deserialize(obj: User): User {
+		const user: User = new User(obj.id, obj.email, obj.firstname, obj.lastname, obj.password, obj.active);
+		user.userRole = obj.userRole;
+		return user;
+	}
 
 	public static mockTestUser(): User {
 		const user = new User(1, 'test@email.com', 'testFirstname', 'testLastname', 'testPassword', true);
