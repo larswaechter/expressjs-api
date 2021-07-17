@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import { body, param, query } from 'express-validator';
 
-import { IComponentRoutes } from '../index';
-
 import { AuthService, PassportStrategy } from '../../../services/auth';
+
+import { IComponentRoutes } from '../helper';
 
 import { UserController } from './controller';
 

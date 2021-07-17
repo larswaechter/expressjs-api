@@ -1,7 +1,8 @@
 import { bind } from 'decko';
 import { getManager } from 'typeorm';
 
-import { AbsRepository } from '../AbsRepository';
+import { AbsRepository } from '../helper';
+
 import { User } from './model';
 
 export class UserRepository extends AbsRepository<User> {

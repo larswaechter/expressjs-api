@@ -1,21 +1,9 @@
 import { Router } from 'express';
 
-import { AuthService } from '../../services/auth';
-
 import { AuthRoutes } from './auth/routes';
 import { UserRoutes } from './user/routes';
 import { UserInvitationRoutes } from './user-invitation/routes';
 import { UserRoleRoutes } from './user-role/routes';
-
-export interface IComponentRoutes<T> {
-	readonly name: string;
-	readonly controller: T;
-	readonly router: Router;
-	authSerivce: AuthService;
-
-	initRoutes(): void;
-	initChildRoutes?(): void;
-}
 
 /**
  * Init component routes

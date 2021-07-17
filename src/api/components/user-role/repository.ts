@@ -1,6 +1,7 @@
 import { getManager } from 'typeorm';
 
-import { AbsRepository } from '../AbsRepository';
+import { AbsRepository } from '../helper';
+
 import { UserRole } from './model';
 
 export class UserRoleRepository extends AbsRepository<UserRole> {

@@ -1,7 +1,15 @@
-import { createClient } from 'redis';
+import { createClient, RedisClient } from 'redis';
 
 export class RedisService {
-	private static client = createClient();
+	private static client: RedisClient;
+
+	static connect() {
+		this.client = createClient();
+	}
+
+	static disconnect() {
+		this.client.end(true);
+	}
 
 	static getObject<T>(key: string): Promise<T | null> {
 		return new Promise((resolve, reject) => {

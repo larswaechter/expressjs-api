@@ -13,12 +13,17 @@ import { env } from './config/globals';
 import { logger } from './config/logger';
 
 import { Server } from './api/server';
+import { RedisService } from './services/redis';
 
 // Startup
 (async function main() {
 	try {
+		// Connect db
 		logger.info('Initializing ORM connection...');
 		const connection: Connection = await createConnection();
+
+		// Connect redis
+		RedisService.connect();
 
 		// Init express server
 		const app: express.Application = new Server().app;
@@ -33,6 +38,7 @@ import { Server } from './api/server';
 
 		server.on('close', () => {
 			connection.close();
+			RedisService.disconnect();
 			logger.info('node server closed');
 		});
 	} catch (err) {

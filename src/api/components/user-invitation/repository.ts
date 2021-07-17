@@ -1,6 +1,7 @@
 import { getManager } from 'typeorm';
 
-import { AbsRepository } from '../AbsRepository';
+import { AbsRepository } from '../helper';
+
 import { UserInvitation } from './model';
 
 export class UserInvitationRepository extends AbsRepository<UserInvitation> {

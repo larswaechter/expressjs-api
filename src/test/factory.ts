@@ -16,6 +16,7 @@ import supertest from 'supertest';
 import { env } from '../config/globals';
 
 import { Server } from '../api/server';
+import { RedisService } from '../services/redis';
 
 /**
  * TestFactory
@@ -61,6 +62,7 @@ export class TestFactory {
 	public async close(): Promise<void> {
 		this._server.close();
 		this._connection.close();
+		RedisService.disconnect();
 	}
 
 	/**
@@ -68,6 +70,7 @@ export class TestFactory {
 	 */
 	private async startup(): Promise<void> {
 		this._connection = await createConnection(this.options);
+		RedisService.connect();
 		this._app = new Server().app;
 		this._server = createServer(this._app).listen(env.NODE_PORT);
 	}

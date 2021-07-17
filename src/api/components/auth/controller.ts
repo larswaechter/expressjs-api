@@ -96,8 +96,6 @@ export class AuthController {
 
 			const savedUser = await this.userRepo.save(newUser);
 
-			this.userRepo.deleteFromCache();
-
 			await this.userInvRepo.delete(invitation);
 
 			return res.status(200).json(savedUser);
@@ -167,8 +165,6 @@ export class AuthController {
 			}
 
 			await this.userRepo.delete(user);
-
-			this.userRepo.deleteFromCache();
 
 			return res.status(204).send();
 		} catch (err) {

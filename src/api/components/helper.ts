@@ -1,7 +1,19 @@
 import { bind } from 'decko';
+import { Router } from 'express';
 import { Repository, FindManyOptions, FindOneOptions } from 'typeorm';
+import { AuthService } from '../../services/auth';
 
 import { RedisService } from '../../services/redis';
+
+export interface IComponentRoutes<T> {
+	readonly name: string;
+	readonly controller: T;
+	readonly router: Router;
+	authSerivce: AuthService;
+
+	initRoutes(): void;
+	initChildRoutes?(): void;
+}
 
 export class AbsRepository<T> {
 	protected readonly name: string;
@@ -14,6 +26,9 @@ export class AbsRepository<T> {
 		this.defaultRelations = defaultRelations;
 	}
 
+	/**
+	 * Delete cache data
+	 */
 	@bind
 	deleteFromCache() {
 		RedisService.deleteKey(this.name);
