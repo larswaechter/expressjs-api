@@ -8,12 +8,12 @@ describe('Testing user-role component', () => {
 	const factory: TestFactory = new TestFactory();
 	const testRole: UserRole = UserRole.mockTestUserRole();
 
-	before(async () => {
-		await factory.init();
+	before((done) => {
+		factory.init().then(done);
 	});
 
-	after(async () => {
-		await factory.close();
+	after((done) => {
+		factory.close().then(done);
 	});
 
 	describe('POST /user-roles', () => {

@@ -10,12 +10,12 @@ describe('Testing auth component', () => {
 
 	let invitationUUID: string;
 
-	before(async () => {
-		await factory.init();
+	before((done) => {
+		factory.init().then(done);
 	});
 
-	after(async () => {
-		await factory.close();
+	after((done) => {
+		factory.close().then(done);
 	});
 
 	describe('POST /auth/invite', () => {
