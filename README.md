@@ -1,6 +1,6 @@
 # expressjs-api
 
-This repository is a dummy Node.js REST-API built with [Express](https://expressjs.com/) and [TypeScript](https://www.typescriptlang.org/). You might want to use it as codebase for your own Node project.
+This repository is a dummy Node.js REST-API built with [TypeScript](https://www.typescriptlang.org/) and [Express](https://expressjs.com/). You might want to use it as codebase for your own Node project.
 
 You can find a detailed explanation about the application's architecture on my [blog](https://larswaechter.dev/blog/nodejs-rest-api-structure/).
 
@@ -18,11 +18,12 @@ A shortened list of the Node modules used in this app:
 
 ## Features
 
-- ACL
+- ACL (access control list)
 - Component-based architecture
-- Caching
+- Caching (Redis)
 - DB seeding
 - Mailing
+- MySQL
 - Testing
 
 ## Folder structure
@@ -42,8 +43,8 @@ Read more [here](https://larswaechter.dev/blog/nodejs-rest-api-structure/).
 
 Requirements:
 
-- [Node.js](https://nodejs.org/en/)
 - [MySQL](https://www.mysql.com/de/)
+- [Node.js](https://nodejs.org/en/)
 - [Redis](https://redis.io/)
 
 Installation:
@@ -74,7 +75,7 @@ You can reach the server at [http://localhost:3000/api/v1/](http://localhost:300
 During the build process the following tasks are executed:
 
 - Compiling TS into JS
-- Copying mail html templates to `dist` directory
+- Copying mail HTML templates to `dist` directory
 - Merging component `policy.json` files into a single one in `dist/output/policies.combined.json`
 
 The last two tasks are executed using Gulp as you can see in `gulpfile.js`.

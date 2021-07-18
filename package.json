@@ -1,11 +1,12 @@
 {
-	"name": "express-example-api",
+	"name": "expressjs-api",
 	"version": "1.0.0",
 	"author": "Lars Wächter",
-	"description": "An example Node.js REST-API built with Express.js",
+	"description": "An example Node.js REST-API built with Typescript & Express.js",
 	"homepage": "https://larswaechter.dev/blog/nodejs-rest-api-structure/",
 	"repository": "https://github.com/larswaechter/expressjs-api",
 	"main": "./dist/app.js",
+	"private": true,
 	"scripts": {
 		"start": "node ./dist/app.js",
 		"start-docker": "npm run build && npm start",
