@@ -4,7 +4,7 @@ This repository is a dummy Node.js REST-API built with [TypeScript](https://www.
 
 You can find a detailed explanation about the application's architecture on my [blog](https://larswaechter.dev/blog/nodejs-rest-api-structure/).
 
-## Packages
+## :file_folder: Packages
 
 A shortened list of the Node modules used in this app:
 
@@ -16,7 +16,7 @@ A shortened list of the Node modules used in this app:
 - [redis](https://www.npmjs.com/package/redis)
 - [typeorm](https://www.npmjs.com/package/typeorm)
 
-## Features
+## :crystal_ball: Features
 
 - ACL (access control list)
 - Component-based architecture
@@ -37,7 +37,7 @@ Read more [here](https://larswaechter.dev/blog/nodejs-rest-api-structure/).
 - `src/services` services for sending mails, caching, authentication and more
 - `src/test` test factory
 
-## Setup
+## :computer: Setup
 
 ### Native
 
@@ -88,7 +88,7 @@ You can load the script via a npm command: `npm run seed`.
 
 If you want to seed the database from a Docker container you must connect to it before: `docker exec -it expressjs-api bash`.
 
-## Tools
+## :hammer: Tools
 
 ### ACL
 
@@ -101,3 +101,8 @@ During the build process all these `policy.json` files get merged into a single 
 [MailHog](https://github.com/mailhog/MailHog) is an email testing tool for developers. You can use it as SMTP server to simulate the process of sending mails. MailHog is included as Docker image within the `docker-compose.yml` file.
 
 Start the containers as described above and you can open the MailHog web interface at [http://localhost:8025](http://localhost:8025/) where you'll find an overview of all sent emails.
+
+## :octocat: Community
+
+- [Website](https://larswaechter.dev/)
+- [Buy me a coffee](https://www.buymeacoffee.com/larswaechter)
