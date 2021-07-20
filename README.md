@@ -4,7 +4,7 @@ This repository is a dummy Node.js REST-API built with [TypeScript](https://www.
 
 You can find a detailed explanation about the application's architecture on my [blog](https://larswaechter.dev/blog/nodejs-rest-api-structure/).
 
-## :file_folder: Packages
+## :pushpin: Packages
 
 A shortened list of the Node modules used in this app:
 
@@ -26,7 +26,7 @@ A shortened list of the Node modules used in this app:
 - MySQL
 - Testing
 
-## Folder structure
+## :open_file_folder: Folder structure
 
 Read more [here](https://larswaechter.dev/blog/nodejs-rest-api-structure/).
 
