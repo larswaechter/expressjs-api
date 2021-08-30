@@ -84,9 +84,9 @@ The last two tasks are executed using Gulp as you can see in `gulpfile.js`.
 
 In `db/seed.sql` you'll find a SQL script that can be used for seeding the database with dummy data. Make sure that the database and its tables were created before executing the script. The tables are created on application start.
 
-You can load the script via a npm command: `npm run seed`.
+You can load the script via a npm command: `npm run seed`. If you want to seed the database from a Docker container you must connect to it before: `docker exec -it expressjs-api bash`.
 
-If you want to seed the database from a Docker container you must connect to it before: `docker exec -it expressjs-api bash`.
+Read more about database seeding on my [blog](https://larswaechter.dev/blog/nodejs-database-seeding/).
 
 ## :hammer: Tools
 
