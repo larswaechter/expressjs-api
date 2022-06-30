@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 require('dotenv').config();
 
 // Read SQL seed query
-seedQuery = fs.readFileSync('db/seed.sql', {
+const seedQuery = fs.readFileSync('db/seed.sql', {
 	encoding: 'utf-8'
 });
 
